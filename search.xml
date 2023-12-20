@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>总结和计划</title>
+    <url>/2019/08/04/%E6%80%BB%E7%BB%93%E5%92%8C%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<p>转眼bigo实习已经一个月了，做下简要的总结和安排。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>bigo实习一个月，总体来说体验良好，学到了一些东西如监控系统，TSDB数据库，nginx实现权限验证（这个本想今天写一篇文章单独总结一下的但时间不够了只能拖至下周末），但是业务上没被分配做什么事情，不像前端的同事能做些比较实在的东西，心里不安（危机感，哈哈）。</p>
+<p>博客方面要修的bug比较麻烦，前端页面打包放到服务器上样式就有些出入，这个困扰了很久，问了几个前端的朋友都说没遇过这种情况，头大。（2023留，只记得解决了，但不记得是怎么解决的）</p>
+<p>另一个是后端的缓存设计问题，spring cache本身太局限，不好控制缓存的细粒度，看了看网上的资料要用aop才能满足自己的需求。另一个就是评论过滤的问题，文本现在就一个注入过滤，其他的比如敏感词过滤就没有，查了资料，计划用字典树压缩敏感词内容读到内存去。博客订阅暂时不会弄，数据统计方面现在去掉了百度统计，考虑替换成谷歌的……还有一个就是vue页面seo的问题，现在网站根本就没法被搜索引擎爬到，这个也是一个大坑。</p>
+<h2 id="计划"><a href="#计划" class="headerlink" title="计划"></a>计划</h2><ol>
+<li>准备转正答辩和秋招，加强下英语能力。</li>
+<li>博客页面的重构计划放到秋招之后，因为对我来说是个大工程。还有两个坑…视频弹幕网站和云笔记两个项目想做做。</li>
+<li>游戏娱乐：就碧蓝幻想</li>
+<li>书籍阅读。主要的书：地错，加速世界，蝇王，雪中悍刀行，长安十二时辰。</li>
+</ol>
+<h2 id="2023"><a href="#2023" class="headerlink" title="2023"></a>2023</h2><p>那时转正答辩顺利，秋招没怎么准备投了几家就懈怠了，英语也是在工作中才有了点进步，平时没去弄。</p>
+<p>计划写得惭愧，4年了，至今弹幕网和云笔记连新建文件夹都没有。弹幕网放弃了，云笔记可能倒有需求。</p>
+<p>碧蓝幻想至今也还有玩，倒是想不到。</p>
+<p>书籍 蝇王买了没看，雪中悍刀行看了几页因为一处描写没再看下去（买的全套书籍也吃灰了好久）</p>
+]]></content>
+      <tags>
+        <tag>总结</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>2018总结</title>
     <url>/2019/01/01/2018%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h2 id="不大走运的开头"><a href="#不大走运的开头" class="headerlink" title="不大走运的开头"></a>不大走运的开头</h2><p>可能17年12月底立的flag(发了条朋友圈，后来觉悟删了)太多导致18年一月份就过的很不顺利。1月份其实垃圾手游给我带来了很大伤害，晚上心态爆炸导致没睡好着凉了，一直拖着没去校医院，找同学拿了点药吃，反而感觉更糟了，在虚的不行的情况下顶着冷雨去看了病(吸取教训，药不能乱吃)，那几天状态非常糟糕，晚上睡不着，起来没精神，学习方面直接搁浅了，每天坐在宿舍里对着行将就木，宛如死尸。好不容易撑过了考试，熬过了低烧，没几天过敏又开始造访(后面再次证实乱吃药的后遗症)，一开始没怎么在意，谁知道这场过敏持续了将近一个月。<br>过敏期间虽然身体不大舒服，寒假里游戏最好的收获大概就是下图了吧（写到这里发现博文没有图片折叠功能和预览功能，之后再补上吧）<br><img  
@@ -48,7 +70,7 @@
     <content><![CDATA[<h5 id="将2020及之前的网站与文章推荐做一个整理，标记不能访问的，去掉自己现在不喜欢的。"><a href="#将2020及之前的网站与文章推荐做一个整理，标记不能访问的，去掉自己现在不喜欢的。" class="headerlink" title="将2020及之前的网站与文章推荐做一个整理，标记不能访问的，去掉自己现在不喜欢的。"></a>将2020及之前的网站与文章推荐做一个整理，标记不能访问的，去掉自己现在不喜欢的。</h5><p><a class="link"   href="https://www.shuxuele.com/index.html" >数学乐 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>入职被安排了解短信网关选择算法，因为有正态分布等相关数学思想，所以在网上找资料回顾，便发现了一个很不错的知识网站，内容详实，条理清晰。其实数学上一些知识还是非常有意思的，有时间可以借此网站补下课。</p>
 <p><a class="link"   href="https://oschina.gitee.io/learn-git-branching/" >Learn Git Branching <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>程序员刚入职场前不知道准备什么时，学习git的使用肯定没错。不用多精通，记住主要的命令就够日常使用了。下面的网站是一个git教程网站，提供实操以及生动形象的动画配合理解。</p>
 <p><a class="link"   href="https://www.jiumodiary.com/" >鸠摩搜索 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>如果还在用百度、谷歌来搜索某本书的电子版资源时是否会被广告或是钓鱼网站所困扰，不妨试试这个专门针对文档的搜索引擎——鸠摩搜索。目前我试着搜了四本彼此无关联性的书，都能成功找到不错的下载源，重要的是目前该网站非常清爽简洁，没有什么广告。如果觉得书写得不错经济允许不妨支持下正版。</p>
-<p><a class="link"   href="https://www.gcores.com/articles/94695" >从《战神4》的LOGO说起，带你解读神秘的北欧卢恩符文 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>最近看了篇报道讲得是一名学生用卢恩符文写作文，结果老师还是花了三个小时将其翻译了过来。这让我萌生了将汉字转为卢恩符文得想法，思路也很简单：将汉字转化为拼音（或者英文）再将其转化为对应的卢恩符文，就像这位老师将卢恩符文转为罗马音再转为日语一样。要想实现这一想法，就必须得对卢恩符文有所了解，而这篇文章恰好可以带我们入门卢恩符文。</p>
+<p><a class="link"   href="https://www.gcores.com/articles/94695" >从《战神4》的LOGO说起，带你解读神秘的北欧卢恩符文 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>最近看了篇报道讲得是一名学生用卢恩符文写作文，结果老师还是花了三个小时将其翻译了过来。这让我萌生了将汉字转为卢恩符文得想法，思路也很简单：将汉字转化为拼音（或者英文）再将其转化为对应的卢恩符文，就像这位老师将卢恩符文转为罗马音再转为日语一样。要想实现这一想法，就必须得对卢恩符文有所了解，而这篇文章恰好可以带我们入门卢恩符文。<br>d</p>
 <p><a class="link"   href="https://www.bbc.com/zhongwen/simp/science-53109403?at_campaign=64&at_custom1=%5Bpost+type%5D&at_medium=custom7&at_custom2=facebook_page&at_custom3=BBC+News+Chinese+(Simplified)&at_custom4=6146BD76-B271-11EA-B5E4-FFEB39982C1E&fbclid=IwAR1PeenlQCnv4ks4AP22tg99W9CcDskqNZRWtgkj-XPP8pXVZ0hCB-Imuk4" >蜜蜂王国解密：你以为是蜂王闺密私语 真相很残酷 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>前几天看了一个段子说老鼠偷了人类的大米人类说它狡猾，而人类偷了蜜蜂的蜂蜜，却只说蜜蜂勤劳。说到蜜蜂，人类对它有多少认识？</p>
 <p><a class="link"   href="https://github.com/pro648/tips/wiki/%E4%BA%94%E7%A7%8D%E5%B8%B8%E8%A7%81%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE" >五种常见流媒体协议 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>在尝试弄弄直播的时候流媒体协议必然是绕不开的，本篇文章是对流媒体协议的简单介绍，同时作者的tip下也对ios开发做了总结，如果对ios开发有兴趣可以看一看。</p>
 <p><a class="link"   href="https://www.gcores.com/articles/124387" >借《Mafia》聊聊真实的西西里黑手党 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>虽然Mafia我没玩过，但《教父》三部曲我是看过的，小说也看了第一部，有时间再补补。如果想了解西西里的黑手党，不妨可以看看本篇文章。</p>
@@ -57,7 +79,7 @@
 <p><a class="link"   href="https://www.gcores.com/articles/122716" >聊一聊Puzzle：华容道与其他滑块游戏 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>华容道可以代指一种滑块游戏我是从某一季的最强大脑节目知道的，有段时间会时不时掏出手机玩一盘。刚开始不懂技巧，只会顺着直觉挪动方块，花的时间足够长总会拼成功。后面才上网学了点小技巧，复原的速度有明显提升。本篇文章描述了华容道游戏的一些历史以及各种变体游戏。</p>
 <p><a class="link"   href="https://www.mapstd.com/" >mapstd <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>谷歌地图在线塔防。<del>上课&#x2F;工作摸鱼利器</del>。</p>
 <p><a class="link"   href="https://haveibeenpwned.com/" >‘;–have i been pwned? <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>想知道自己的账户密码是否安全？可以试试这个网站，是国外一位安全专家建立的，简单说就是搜集了因各种原因而被泄漏到网上的数据库跟你的邮箱账号进行匹配（据说作者拿到了约炮网站数据库于是有段时间被人用来作为捉奸工具，哈哈）。</p>
-<p><a class="link"   href="https://zhuanlan.zhihu.com/p/84572711" >你跳宅舞的样子很专业：不，这都是AI合成的结果 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>前段时间某换脸App软件引起了轩然大波，人人自危。现在又有AI能让一张照片里静态的人不用训练就能变成舞蹈视频中的舞见。（此条记录于2019年。2023年，chatGPT又将AI推向了一个新高度，AI在图像、视频、文字上的处理能力也让我大为震撼。如果要总结这一年的热词，AI必占一席，而这一年也被称为生成式AI之年。）</p>
+<p><a class="link"   href="https://zhuanlan.zhihu.com/p/84572711" >你跳宅舞的样子很专业：不，这都是AI合成的结果 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>前段时间某换脸App软件引起了轩然大波，人人自危。现在又有AI能让一张照片里静态的人不用训练就能变成舞蹈视频中的舞见。（2023年留，ChatGPT又将AI推向了一个新高度，AI在图像、文字上的处理能力也让我大为震撼。如果要总结这一年的热词，AI必占一席，而2023年也被不少人誉为生成式AI之年。）</p>
 <p><a class="link"   href="https://www.gcores.com/articles/121249" >童谣是怎么一步步发展到今天这样的 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>说起童谣，你还记得多少？“蚂蚁搬家蛇过道，明日必有大雨到”，“小孩小孩你别馋，过了腊八就是年”。该篇文章是一位00后作者对童谣发展的一个探究。</p>
 <p><a class="link"   href="https://www.bilibili.com/read/cv4680782?from=category_0" >世界上第一个“超级传播者”，是怎么被发现的 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>如果一个自身健康的病菌传播者出现在你身边且当前医疗手段无法治愈应该如何处理？这篇文章让我想起了一本小说《岛》。</p>
 <p><a class="link"   href="https://www.gcores.com/articles/119489" >通过《驯龙高手》聊聊有关物种灭绝的一些事 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>对物种灭绝的简略科普。</p>
