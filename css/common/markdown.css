@@ -1,5 +1,5 @@
 .markdown-body {
-  font-family: $english-font-family, $chinese-font-family, sans-serif;
+  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif', 'source-han-serif-sc', 'PT Serif', 'SongTi SC', 'MicroSoft Yahei', Georgia, serif;
   font-size: $default-article-font-size;
 }
 .markdown-body blockquote {
@@ -18,16 +18,17 @@
   padding: 5px 5px 5px 10px;
 }
 .markdown-body p {
-  line-height: $default-line-height;
+  line-height: 30px;
   color: var(--default-text-color);
   font-weight: 400;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   margin-top: 0;
 }
 .markdown-body a {
+  font-weight: bold;
   position: relative;
   outline: 0;
-  text-decoration: underline;
+  text-decoration: none;
   overflow-wrap: break-word;
   cursor: pointer;
   box-sizing: border-box;
