@@ -599,7 +599,7 @@
             <script data-swup-reload-script>
                 function updateExpirationDate() {
                     try{
-                        const expiredDate = new Date("2020-12-01 10:01");
+                        const expiredDate = new Date("2020-08-08 10:01");
                         const updatedDate = new Date("Thu Aug 08 2019 23:59:00 GMT+0800");
                         const now = new Date();
                         const expirationValue = document.getElementById("expiration-date");
@@ -626,13 +626,13 @@
             <h2 id="设计基本思路"><a href="#设计基本思路" class="headerlink" title="设计基本思路"></a>设计基本思路</h2><p>背景：</p>
 <p>公司各种监控系统的权限尚未做细致分配，可读就可写，不可读就不可写，简单粗暴。如果自己再开发设计一套系统，费时费力不说还增加了维护的工作量。这些监控系统本身至于内网中，外部想要访问就需要通过nginx代理。于是这个作为代理服务器的nginx就是解决问题的核心所在，系统的读写请求都要经过它到后端去，只要在这一环增加权限控制，便能一次性的解决多个监控系统权限控制的问题，不需要对应每一个系统单独写一个权限控制服务。有了nginx作权限控制，那么谁来提供角色分配与管理呢。答案是gitlab。</p>
 <p>公司是以gitlab作为管理仓库。而它本身刚好又提供了一套权限机制，在不需要过于复杂的RBAC（如淘宝）要求，gitlab本身的五种角色足够用（Guest，reporter，Developer，Master，Owner），而且因为角色权限是基于组，项目而言的（并不能脱离这两样去单独查某个用户的权限，gitlab管理员这种除外），故而实际上可以利用这一点进行细分，比如在组中设立多个项目，A项目人员只能访问A系统，B项目只能访问B系统等，而上述五种角色则是规定读写权限。在gitlab官方api中可以通过“&#x2F;projects&#x2F;:id”来获取当前授权用户的信息，其中就包括permission字段，内容是你在这个项目，组中的access_level（即权限，说来惭愧，两次我跟导师说没有这查询权限的接口存在，却殊不值它就在灯火阑珊处……）。</p>
-<h3 id="搭建流程"><a href="#搭建流程" class="headerlink" title="搭建流程"></a>搭建流程</h3><p>首先我选用openresty，因为其很好的支持lua，在nginx写自己的权限校验逻辑时个人体感良好的。而gitlab则是用户权限管理系统也是授权服务器。环境搭建没有可说点，唯一需要吐槽的就是gitlab系统要求高，4G2核，我自身的电脑基本是跑一个gitlab就没法再跑其他应用了（不合格的程序员）搭建完之后创建授权服务，根据需要可以设置为单人或是全局应用。采用的是oauth2协议授权码模式。</p>
+<h2 id="搭建流程"><a href="#搭建流程" class="headerlink" title="搭建流程"></a>搭建流程</h2><p>首先我选用openresty，因为其很好的支持lua，在nginx写自己的权限校验逻辑时个人体感良好的。而gitlab则是用户权限管理系统也是授权服务器。环境搭建没有可说点，唯一需要吐槽的就是gitlab系统要求高，4G2核，我自身的电脑基本是跑一个gitlab就没法再跑其他应用了（不合格的程序员）搭建完之后创建授权服务，根据需要可以设置为单人或是全局应用。采用的是oauth2协议授权码模式。</p>
 <p>梳理一下思路，nginx作为资源服务器，gitlab作为认证服务器，客户端便是用户使用的浏览器。根据oauth2协议，我们访问资源，资源服务器判断未授权（access_token过期或尚未登录进行授权），跳转到gitlab输入账密登录是确任授权，此时gitlab会发放一个授权码（不是access_token），至此第一步完成。随后客户端访问携带授权码参数的redirect_url，这里是重点。因为我们是使用nginx作为权限控制，自然redirect_url是nginx中的一个location。访问该接口，nginx取得授权码便向认证服务器申请access_token,获取t之后查询gitlab用户access_level,比较所访问的资源权限要求判断是否符合要求，符合则将资源返回给客户端，同时设置响应header中的set-cookie，加入token,至此一个流程走完；不符则响应403。历史悠久的cookie认证机制，因为CSRF问题而被人诟病，那为什么还要用呢？因为我们浏览器是直接访问资源的过程中进行认证，发放的access_token，浏览器如何主动请求特定资源携带该token呢？如果是个vue啥的页面我还知道怎么做，但是这种情景下除了利用cookie机制让浏览器主动帮我们加上之外，想不出其他更好的办法。既然使用cookie，那自然要在nginx上做一些cookie相关限制，如禁止跨域，过期时间，domain。对比着阮一峰的图，感觉整个流程上有些差异，梳理到这感觉nginx更像是一个客户端行为。</p>
 <p>简要的概括无法代表内部具体逻辑的实现,其中openresty中的lua更是功不可没，也是核心所在（不知为什么写起lua来感觉顺手）。gitlab接口api，过期时间也是折腾了好一会。整体来说搭建并不复杂，但是因为我对nginx配置不熟悉，花了不少时间折腾这个，比如最开始想要用nginScript逻辑实现时，发现写的十分难受，不是语法不支持就是nginx的配置不对，还不知道怎么调试，毕竟不是ide可以给你打个断点一步步来（或许真的有但我不知道？），只能从错误日志有限的内容推断。</p>
-<h4 id="有谁在用？"><a href="#有谁在用？" class="headerlink" title="有谁在用？"></a>有谁在用？</h4><p>为什么要有说这个呢？因为要说服自己用openResty而不是Nginx。团队技术选型要更为谨慎。<br>考虑企业使用情况，社区活跃程度。前者反应市场考验，后者反应产品活力，利于后续使用中的防坑与排错。</p>
+<h2 id="有谁在用？"><a href="#有谁在用？" class="headerlink" title="有谁在用？"></a>有谁在用？</h2><p>为什么要有说这个呢？因为要说服自己用openResty而不是Nginx。团队技术选型要更为谨慎。<br>考虑企业使用情况，社区活跃程度。前者反应市场考验，后者反应产品活力，利于后续使用中的防坑与排错。</p>
 <p><a class="link"   target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000004113020" >https://segmentfault.com/a/1190000004113020 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://www.zhihu.com/question/40091533" >https://www.zhihu.com/question/40091533 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p>发现还是有不少公司是在用openresty。openresty开源作者也早以在美国成立了Openresty公司</p>
-<h4 id="为什么不使用nginScript而是lua"><a href="#为什么不使用nginScript而是lua" class="headerlink" title="为什么不使用nginScript而是lua?"></a>为什么不使用nginScript而是lua?</h4><ol>
+<h2 id="为什么不使用nginScript而是lua"><a href="#为什么不使用nginScript而是lua" class="headerlink" title="为什么不使用nginScript而是lua?"></a>为什么不使用nginScript而是lua?</h2><ol>
 <li>语法上跟js有区别，并不是纯粹的js，个人体验上并不顺手。</li>
 <li>在用nginx作权限验证这块资料不如ngx_lua多，降低学习成本，节省时间。</li>
 <li>对lua有兴趣。早前玩手游的时候对于重复机械性的操作厌烦，找辅助脚本时了解到lua适合写该类脚本：<a class="link"   target="_blank" rel="noopener" href="https://www.zhihu.com/question/20296452/answer/79609419" >https://www.zhihu.com/question/20296452/answer/79609419 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 。</li>
@@ -806,7 +806,7 @@
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
         <div class="page-title">用nginx做权限验证</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E5%9F%BA%E6%9C%AC%E6%80%9D%E8%B7%AF"><span class="nav-text">设计基本思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="nav-text">搭建流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8openresty%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%EF%BC%9A"><span class="nav-text">使用openresty注意事项：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8nginx%E7%BC%93%E5%AD%98%E4%B8%BB%E8%A6%81%E7%9B%AE%E7%9A%84%EF%BC%9F"><span class="nav-text">使用nginx缓存主要目的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E9%A2%84%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F"><span class="nav-text">常用预定义变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%E8%B5%84%E6%96%99%EF%BC%9A"><span class="nav-text">补充资料：</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E5%9F%BA%E6%9C%AC%E6%80%9D%E8%B7%AF"><span class="nav-text">设计基本思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B"><span class="nav-text">搭建流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E8%B0%81%E5%9C%A8%E7%94%A8%EF%BC%9F"><span class="nav-text">有谁在用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E4%BD%BF%E7%94%A8nginScript%E8%80%8C%E6%98%AFlua"><span class="nav-text">为什么不使用nginScript而是lua?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8openresty%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%EF%BC%9A"><span class="nav-text">使用openresty注意事项：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8nginx%E7%BC%93%E5%AD%98%E4%B8%BB%E8%A6%81%E7%9B%AE%E7%9A%84%EF%BC%9F"><span class="nav-text">使用nginx缓存主要目的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E9%A2%84%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F"><span class="nav-text">常用预定义变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%E8%B5%84%E6%96%99%EF%BC%9A"><span class="nav-text">补充资料：</span></a></li></ol>
 
     </div>
 </div>
