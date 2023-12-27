@@ -211,10 +211,10 @@ export default function initLocalSearch() {
     }
     if (keywords.length === 1 && keywords[0] === "") {
       resultContent.innerHTML =
-        '<div id="no-result"><i class="fa-solid fa-magnifying-glass fa-5x"></i></div>';
+        '<div id="no-result"><img src="https://pic.imgdb.cn/item/658a26a2c458853aef9c901c.png"></div>';
     } else if (resultItems.length === 0) {
       resultContent.innerHTML =
-        '<div id="no-result"><i class="fa-solid fa-box-open fa-5x"></i></div>';
+        '<div id="no-result"><img src="https://pic.imgdb.cn/item/658be8fbc458853aef36169b.png"></div>';
     } else {
       resultItems.sort((resultLeft, resultRight) => {
         if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
@@ -268,7 +268,7 @@ export default function initLocalSearch() {
         const noResultDom = document.querySelector("#no-result");
         noResultDom &&
           (noResultDom.innerHTML =
-            '<i class="fa-solid fa-magnifying-glass fa-5x"></i>');
+            '<img src="https://pic.imgdb.cn/item/658a26a2c458853aef9c901c.png">');
       });
   };
 
