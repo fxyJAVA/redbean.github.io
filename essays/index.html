@@ -24,7 +24,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-12-29T03:14:19.000Z">
-<meta property="article:modified_time" content="2023-12-29T03:27:29.831Z">
+<meta property="article:modified_time" content="2023-12-29T03:27:30.000Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
     
@@ -471,7 +471,7 @@
     </a>
 
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
         <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
@@ -496,21 +496,26 @@
     
     
         <div class="mb-4">
-    <h1 class="page-title-header">呓语</h1>
-    <ul class="flex flex-col mb-4 gap-6">
-        
-        
-            <li class="w-full flex flex-row relative">
-                <div class="w-10 h-10 mr-4 rounded-lg overflow-hidden border border-border-color p-[1px] flex-shrink-0"><img src="https://pic.imgdb.cn/item/65828480c458853aef3b2fab.png" class="w-full h-full rounded-[6.2px]"></div>
-                <div class="w-full border-border-color rounded-xl rounded-tl-none redefine-box-shadow-flat overflow-hidden">
-                    <div class="px-4 py-1.5 text-sm border-b border-border-color bg-zinc-50 dark:bg-zinc-800 text-third-text-color">2019/01/04</div>
-                    <div id="shuoshuo-content" class="px-4 py-2"><p>说说测试，这是第四个，换行测试<br>说说测试，这是第四个，换行测试<br>说说测试，这是第四个，换行测试<br>说说测试，这是第四个，换行测试</p>
-</div>
-                </div>
-                <div class=" absolute left-[50.5px] top-3 transform w-2 h-2 border-solid border-t border-l bg-zinc-50 -rotate-45 border-border-color dark:bg-zinc-800"></div>
-            </li>
-        
-    </ul>
+   <h1 class="page-title-header">呓语</h1>
+   <!-- 引用 artitalk -->
+    <script async data-pjax type="text/javascript" src="https://cdn.staticfile.org/artitalk/3.3.4/js/artitalk.min.js"></script>
+    <!-- 存放说说的容器 -->
+    <div id="artitalk_main"></div>
+    <script async data-pjax>
+    new Artitalk({
+        appId: '', // Your LeanCloud appId
+        appKey: '', // Your LeanCloud appKey
+        serverURL: 'https://avoscloud.com',
+        pageSize: 50, //每页评论数量
+        shuoPla: '', //评论框里显示，可以不填
+        motion: 0, //加载动画的开关 0（关闭），1（开启）
+        atComment: 0, //评论功能的开关 0（关闭），1（开启）
+        bgImg: '', //评论框里的背景，可以不填
+        color1: '#ffffff', //自定义颜色，有几种方式
+        color2: '#ffffff',
+        color3: '#3b9a9c',
+    })
+    </script>
 </div>
 
     
