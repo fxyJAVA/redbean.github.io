@@ -19,6 +19,7 @@
 }
 .markdown-body p {
   line-height: 30px;
+  letter-spacing: 0.5px;
   color: var(--default-text-color);
   font-weight: 400;
   margin-bottom: 1.5rem;

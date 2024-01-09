@@ -919,7 +919,7 @@ button {
 }
 .markdown-body {
   font-family: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif', 'source-han-serif-sc', 'PT Serif', 'SongTi SC', 'MicroSoft Yahei', Georgia, serif;
-  font-size: 16px;
+  font-size: 18px;
 }
 .markdown-body blockquote {
   box-sizing: border-box;
@@ -938,6 +938,7 @@ button {
 }
 .markdown-body p {
   line-height: 30px;
+  letter-spacing: 0.5px;
   color: var(--default-text-color);
   font-weight: 400;
   margin-bottom: 1.5rem;
@@ -7333,7 +7334,7 @@ html.is-animating .scroll-progress-bar {
 .home-content-container .home-article-list .home-article-item .home-article-title {
   position: relative;
   font-weight: 700;
-  font-size: 1.4rem;
+  font-size: 2rem;
   line-height: 1.5;
   color: var(--second-text-color);
   font-family: 'Satoshi-Variable', sans-serif, 'Noto Sans SC', 'Noto Sans SC', sans-serif;
