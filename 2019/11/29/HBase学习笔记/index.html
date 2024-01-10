@@ -13,27 +13,28 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://fxyJAVA.github.io/2019/01/01/2018总结/"/>
+    <link rel="canonical" href="https://fxyJAVA.github.io/2019/11/29/hbase学习笔记/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="不大走运的开头可能17年12月底立的flag(发了条朋友圈，后来觉悟删了)太多导致18年一月份就过的很不顺利。1月份其实垃圾手游给我带来了很大伤害，晚上心态爆炸导致没睡好着凉了，一直拖着没去校医院，找同学拿了点药吃，反而感觉更糟了，在虚的不行的情况下顶着冷雨去看了病(吸取教训，药不能乱吃)，那几天状态非常糟糕，晚上睡不着，起来没精神，学习方面直接搁浅了，每天坐在宿舍里对着行将就木，宛如死尸。好不容">
+        <meta name="description" content="是什么？ Hadoop数据库，一个分布式、可伸缩的大数据存储  HBase有两种模式，一种是Standalone，可以基于本地文件系统存储，也可以基于HDFS存储。二是Distributed，又细分为Pseudo-distributed（主要是测试用）和Fully-distributed（推荐生产环境使用）。 架构： 安装由上图易知，先安装hadoop，再安装zookeeper，最后安装hbas">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2018总结">
-<meta property="og:url" content="https://fxyjava.github.io/2019/01/01/2018%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:title" content="HBase学习笔记">
+<meta property="og:url" content="https://fxyjava.github.io/2019/11/29/HBase%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="不大走运的开头可能17年12月底立的flag(发了条朋友圈，后来觉悟删了)太多导致18年一月份就过的很不顺利。1月份其实垃圾手游给我带来了很大伤害，晚上心态爆炸导致没睡好着凉了，一直拖着没去校医院，找同学拿了点药吃，反而感觉更糟了，在虚的不行的情况下顶着冷雨去看了病(吸取教训，药不能乱吃)，那几天状态非常糟糕，晚上睡不着，起来没精神，学习方面直接搁浅了，每天坐在宿舍里对着行将就木，宛如死尸。好不容">
+<meta property="og:description" content="是什么？ Hadoop数据库，一个分布式、可伸缩的大数据存储  HBase有两种模式，一种是Standalone，可以基于本地文件系统存储，也可以基于HDFS存储。二是Distributed，又细分为Pseudo-distributed（主要是测试用）和Fully-distributed（推荐生产环境使用）。 架构： 安装由上图易知，先安装hadoop，再安装zookeeper，最后安装hbas">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2018/12/20/5c1a6d2d65c13.jpg#width-full">
-<meta property="og:image" content="https://i.loli.net/2018/12/20/5c1a764eaec42.jpg#width-full">
-<meta property="og:image" content="https://i.loli.net/2018/12/20/5c1a7844a3b28.png#width-full">
-<meta property="article:published_time" content="2018-12-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-12-21T03:53:02.000Z">
+<meta property="og:image" content="https://pic.imgdb.cn/item/659dfc3d871b83018ab56c04.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/659dfc3b871b83018ab5689b.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/659dfc3b871b83018ab5691d.png">
+<meta property="og:image" content="https://pic.imgdb.cn/item/659dfc3d871b83018ab56b72.png">
+<meta property="article:published_time" content="2019-11-29T02:15:00.000Z">
+<meta property="article:modified_time" content="2019-11-29T02:15:00.000Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="总结">
+<meta property="article:tag" content="学习笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2018/12/20/5c1a6d2d65c13.jpg#width-full">
+<meta name="twitter:image" content="https://pic.imgdb.cn/item/659dfc3d871b83018ab56c04.png">
     
     
     <!--- Icon Part-->
@@ -45,7 +46,7 @@
     
     <title>
         
-            2018总结 -
+            HBase学习笔记 -
         
         RedBean&#39;s Courtyard
     </title>
@@ -541,7 +542,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">2018总结</h1>
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">HBase学习笔记</h1>
                 </div>
             
             </div>
@@ -560,15 +561,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2019-01-01</span>
-        <span class="mobile">2019-01-01</span>
+        <span class="desktop">2019-11-29 10:15</span>
+        <span class="mobile">2019-11-29 10:15</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-12-21 11:53:02</span>
-            <span class="mobile">2023-12-21 11:53:02</span>
+            <span class="desktop">2019-11-29 10:15</span>
+            <span class="mobile">2019-11-29 10:15</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -580,7 +581,7 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/%E6%80%BB%E7%BB%93/">总结</a>&nbsp;
+                        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>&nbsp;
                     </li>
                 
             </ul>
@@ -611,29 +612,106 @@
         
 
         
+                <div class="article-expire mt-4 mx-2 sm:mx-6 md:mx-8 note p-4 rounded-lg red icon hidden" id="expiration-container">
+                    <i class="expire-icon fa-solid fa-timer mr-0.5 text-red-600 dark:text-red-400"></i>
+                    <span class="expire-label text-red-600 dark:text-red-400 " id="expiration-date">这篇文章最后更新于 some 天前，内容可能已经过时。</span>
+                </div>
+
+            <script data-swup-reload-script>
+                function updateExpirationDate() {
+                    try{
+                        const expiredDate = new Date("2020-11-29 10:15");
+                        const updatedDate = new Date("Fri Nov 29 2019 10:15:00 GMT+0800");
+                        const now = new Date();
+                        const expirationValue = document.getElementById("expiration-date");
+                        const expirationContainer = document.getElementById("expiration-container");
+                        let daysAgo = Math.floor((now - updatedDate) / (1000 * 60 * 60 * 24));
+                        if (expiredDate < now) {
+                            expirationContainer.classList.remove("hidden");
+                            // console.log(daysAgo)
+                            expirationValue.innerHTML = expirationValue.innerHTML.replace("some", daysAgo);
+                        }
+                    } catch (e) {}
+                }
+                document.addEventListener("DOMContentLoaded", function () {
+                    updateExpirationDate();
+                });
+                try {
+                    swup.hooks.on("page:view", updateExpirationDate)
+                } catch (e){}
+            </script>
+        
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <h2 id="不大走运的开头"><a href="#不大走运的开头" class="headerlink" title="不大走运的开头"></a>不大走运的开头</h2><p>可能17年12月底立的flag(发了条朋友圈，后来觉悟删了)太多导致18年一月份就过的很不顺利。1月份其实垃圾手游给我带来了很大伤害，晚上心态爆炸导致没睡好着凉了，一直拖着没去校医院，找同学拿了点药吃，反而感觉更糟了，在虚的不行的情况下顶着冷雨去看了病(吸取教训，药不能乱吃)，那几天状态非常糟糕，晚上睡不着，起来没精神，学习方面直接搁浅了，每天坐在宿舍里对着行将就木，宛如死尸。好不容易撑过了考试，熬过了低烧，没几天过敏又开始造访(后面再次证实乱吃药的后遗症)，一开始没怎么在意，谁知道这场过敏持续了将近一个月。</p>
-<p>过敏期间虽然身体不大舒服，寒假里游戏最好的收获大概就是下图了吧（写到这里发现博文没有图片折叠功能和预览功能，之后再补上吧）<br><img  
+            <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://i.loli.net/2018/12/20/5c1a6d2d65c13.jpg#width-full"
-                      alt="新年福袋"
-                ><br>这大概是当时废狗玩了那么久最欧的一次了……</p>
-<h2 id="继续中断的学习和迎来转折点"><a href="#继续中断的学习和迎来转折点" class="headerlink" title="继续中断的学习和迎来转折点"></a>继续中断的学习和迎来转折点</h2><p>开学之后，身体已经好的差不多了，寒假放纵的心也收回来了，1月生病的缘故，之前的学习断层了，再重拾这些知识时，已经有些生疏了，每天下课后背着电脑找间教室缩在最后一排学习（因为需要墙上的插座），偶尔可能还会被塞上几口狗粮，下过雨后可能还要接待成群的水蚁，不时也会遇上漂亮的姑娘们过来学习才怪。拍了一张某天照旧去学习时的教室照片<br><img  
+                     data-src="https://pic.imgdb.cn/item/659dfc3d871b83018ab56c04.png"
+                      alt="97eaf64220a8eef543d1e5a8ed92ff9d.png"
+                ></p>
+<h2 id="是什么？"><a href="#是什么？" class="headerlink" title="是什么？"></a>是什么？</h2><blockquote>
+<p>Hadoop数据库，一个分布式、可伸缩的大数据存储</p>
+</blockquote>
+<p>HBase有两种模式，一种是Standalone，可以基于本地文件系统存储，也可以基于HDFS存储。<br>二是Distributed，又细分为Pseudo-distributed（主要是测试用）和Fully-distributed（推荐生产环境使用）。</p>
+<p>架构：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://i.loli.net/2018/12/20/5c1a764eaec42.jpg#width-full"
-                      alt="enter description here"
-                ><br>印象里应该是某个周末拍的，无人打扰，独享一片区域，阳光正好，环境安宁，非常喜欢这种氛围。中午以及晚上饿了不时就会选择点份外卖（送到楼下），那段时间的周末是美好而充实的，人的精神状态还不错。这样的机会以后估计会越来越少了吧。<br>接着就迎来了我的一个非常关键的转折点：某天课上刷着学校的贴吧看到学校有新的工作室招新（上课要专心听讲），下课兴冲冲写了份简历投过去，之后幸运的通过了面试（得益于当时面后端的人并不多）。接触到了非常优秀的师兄师姐们，也是我当下追赶的目标，从他们那里学习了很多。也认识了另外三个跟我同期的非常可靠的小伙伴。，以及带队的斗志昂扬的老师。有时候我还在想要是错过那个帖子，我现在又是何种状态呢，这就是命运的安排啊。<br>依旧是17年的11月份偶然见到一位师兄的博客产生了自己想要做自己的个人博客平台的想法，如图是当时做前端的一位师兄的博客🔗<a href="www.yangzicong.com">链接</a><br><img  
+                     data-src="https://pic.imgdb.cn/item/659dfc3b871b83018ab5689b.png"
+                      alt="45eb7d4a0ff7c437e130f6ed63f6f606.png"
+                ></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>由上图易知，先安装hadoop，再安装zookeeper，最后安装hbase。<br>按照以下基本就能顺利安装好，虽然文章的时间比较早，但并不过时。</p>
+<ol>
+<li><a class="link"   target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000009580427" >Hadoop 集群搭建及配置 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000009582313" >Hbase 集群搭建 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://hbase.apache.org/book.html#quickstart" >HBase Quickstar <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><strong>这里要注意各软件之间的兼容性问题</strong>：<br><a class="link"   target="_blank" rel="noopener" href="https://hbase.apache.org/book.html#basic.prerequisites" >Basic Prerequisites <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+<h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><p>NameNode：管理NameNode的节点<br>DateNode：存放数据的节点<br>RegionServer，一般与DateNode绑定于同一台机器，即一个DateNode对应一个RegionServer，负责管理被分配到的若干Region</p>
+<p>Region，HBase数据存储管理的基本单位，初写数据时，没有开启预分区的情况表的数据归属一个region ,当随着数据的增多，region开始变大，等到它达到限定的阀值大小时（hbase.hregion.max.filesize默认10G ），变化把region 分裂为两个大小基本相同的region。</p>
+<h2 id="HBase中的表"><a href="#HBase中的表" class="headerlink" title="HBase中的表"></a>HBase中的表</h2><p>一般数据是用字节数组来进行存储。<br>数据在表中的顺序首先按行，然后按列族（ColumnFamily），然后是列限定符，最后是时间戳（反向排序，因此首先返回最新的记录）。</p>
+<p>namespace，表的逻辑分组，一般同一组中的表有类似的用途，表和命名空间的隶属关系在创建表时决定：&lt;namespace&gt;:&lt;table&gt;。</p>
+<p>Rowkey：表的数据先根据RowKey进行字典排序，具有索引的作用，RowKey在表中是不可变的，唯一修改方法是删除再重新插入。一个RowKey可以对应多个列族。</p>
+<p>ColumnFamily：列族，在创建表的时候就固定。数据按照列族进行物理存储，对现有的表增加&#x2F;删除ColumnFamily，必须先禁用该表。</p>
+<p>Column：归属于一个列族，命名规则为列族前缀+限定符（自定义名称），因为可能存在多个version 的可能，Column本身并不确定表中唯一一条单元。</p>
+<p>Column Qualifier：列限定符，个人理解为就是要一个名字，配合着Column Family前缀名字一起使用。</p>
+<p>Cell：结构为{row key, column( &#x3D;<family> + <label>), version} ，字节码形式存储，在表中确定唯一单元，其中version是长整数，以版本递减顺序存储，即每次读取数据会先读取最新的数据。另外列只能存储最大版本个数的数据，当然每个列族可以设立不同的最大版本数，也可以设置一个全局默认的最大版本数。</p>
+<p>Timestamp: 每个Cell都有一个版本号，而时间戳是默认的版本号。当写入数据时，如果没有指定时间，那么默认的时间就是写入数据的RegionServer上的时间，当然也可以自己指定一个timestamp。读取数据的时候，如果没有指定时间，那么返回的就是最新的数据。</p>
+<p>对表或者Coulumn Family的修改会在下一次<strong>major compaction</strong>或<strong>StoreFiles re-write</strong>时生效</p>
+<h2 id="HBase读写流程"><a href="#HBase读写流程" class="headerlink" title="HBase读写流程"></a>HBase读写流程</h2><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://i.loli.net/2018/12/20/5c1a7844a3b28.png#width-full"
-                      alt="师兄的博客"
-                ><br>内心就想着很棒，一来可以锻炼自己的技术，二来在这个小空间里写写东西感觉很幸福。于是兴冲冲的租了人生中的第一台服务器。但买了服务器所学知识跟不上也是个问题，所以才有了我后续的后端学习，在此之前我还有些（因为大一下学期某工作室考核被刷，半失落状态）。<br>说回现在的年份。5月6月感觉需要的后端知识学的差不多了，于是转而开始攻前端的问题。前端让我见识到了另一片天地，我曾一度被前端那种肉眼可见的美所征服，为自己写出一个小功能而高兴，为一段js的异常而苦恼，为布局为样式而	抓耳挠腮。</p>
-<h2 id="团队合作"><a href="#团队合作" class="headerlink" title="团队合作"></a>团队合作</h2><p>7，8月份暑假，是许多小伙伴的欢快时光，但同时也是提升，超跃自我的一个重要节点。7月份老师开始组织我们四个人（和我同期进工作室的三个小伙伴）参与到她的项目中，结识了两位人非常好的研究生师兄。这段时间算是我这一年里最美好的一段时光了吧。每天和其他三个小伙伴们去广药学习工作，晚上又一起“下班”回校，办公或是路上聊些有的没的（比如比谁的车好骑），这种965的生活方式是我的理想型。期间也一起去尝了不少其他外校的饭堂饭菜，目前印象最好的是华工生活区的那个饭堂吧，可惜没多久就因为暑假而休业了（就是那个距离世界一流大学大概从校门口坐专线2公交到广工站下车就到了的华工）。也鉴别出了我们四个人中某个披着黄种人外表的欧洲细作。可惜向来不怎么喜欢拍照，此处缺少一张照片让人怀念和感伤，不过也好，“再也没有什么比幸福的回忆更妨碍幸福的了。”</p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>本站的第一篇博文，作为对2018年的粗略回顾，后续再补一篇开发上的总结，要忙别的事情，博客开发就暂告一段落了。虽然bug还没解决完，有空再继续维护和修复。</p>
+                     data-src="https://pic.imgdb.cn/item/659dfc3b871b83018ab5691d.png"
+                      alt="96180b03db349ead0f3c0a5debf934c9.png"
+                ><br>由该图也可以看出RegionServer与Region的关系</p>
+<p>Region：<br>一张表会被分到若干个Region上，Region又会被分配到若干RegionServer上。每个Region都有一个startRowKey和一个endRowKey，代表Region存储Rowkey的范围，按照RowKey存放到对应的Region中（因而要实现数据均衡的存放RowKey的设计是关键），一个RowKey对应的行数据只会存放在一个Region中。<br>Region有一个或多个store，每个store对应一个Column Family。而一个store又包含一个memstore和若干个store file。每个Column Family是分开存放的和分开访问的。</p>
+<p>由Region引出Memstore，Memstore是在RegionServer的主内存中，最近接收的数据都先存放在Memstore，用于排序（因为HDFS是顺序写，不支持排序），同时因为是在内存中也可以发挥出缓存的优势（如对最近数据的修改操作仅会写入一次到Hfile中）。每一次Memstore的flush（Memstore中的数据达到设定的阈值），会为每一个Column Family创建一个新的HFile</p>
+<h2 id="Spilt操作"><a href="#Spilt操作" class="headerlink" title="Spilt操作"></a>Spilt操作</h2><p>流程：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/659dfc3d871b83018ab56b72.png"
+                      alt="c9eef168a9ffdf4b42f54e388dd06ac3.png"
+                ><br>Pre-splitting：</p>
+<blockquote>
+<p>一个表刚被创建的时候，Hbase 默认分配一个Region 给表，所有的读写请求都会访问到一个 RegionServer 上的唯一一个 Region。这样就达不到负载均衡的效果了.</p>
+</blockquote>
+<p>pre-split有三种算法：</p>
+<ul>
+<li>HexStringSplit: rowkey是十六进制的字符串作为前缀的</li>
+<li>DecimalStringSplit: rowkey是10进制数字字符串作为前缀的</li>
+<li>UniformSplit: rowkey前缀完全随机</li>
+</ul>
+<p>关于split详细的可参考此篇文章<a class="link"   target="_blank" rel="noopener" href="https://www.yneit.com/2019/09/hbase-split-%E7%AE%80%E4%BB%8B.html" >HBase Split 简介 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。<br>。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>关于HBase的其他重要但尚未了解的部分</p>
+<ol>
+<li>HBase的ACID问题，同一RowKey满足事务，多行之间是否能支持事务？<a class="link"   target="_blank" rel="noopener" href="http://hadoop-hbase.blogspot.com/2012/03/acid-in-hbase.html" >ACID in HBase <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>RowKey的设计问题，前面提到过表数据分配到Region与RowKey有关，RowKey在查询中又兼具索引的作用，长度的多少又会影响到Memstore的效率。<br><a class="link"   target="_blank" rel="noopener" href="https://hbase.apache.org/book.html#rowkey.design" >Rowkey Design <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Memstore配置策略，如何避免频繁flush操作。</li>
+</ol>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ol>
+<li>Hadoop集群搭建完成后，使用hdfs dfsadmin -report命令所有项数据都为0，网上搜索解决方案未解决，重新搭建了一遍解决。</li>
+<li>HBase启动时RegionServer无法启动，虚拟机时间同步后再重启解决。</li>
+<li></li>
+</ol>
 
         </div>
 
@@ -641,18 +719,18 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>标题:</strong> 2018总结</li>
+        <li><strong>标题:</strong> HBase学习笔记</li>
         <li><strong>作者:</strong> redbean</li>
         <li><strong>创建于
-                :</strong> 2019-01-01 00:00:00</li>
+                :</strong> 2019-11-29 10:15:00</li>
         
             <li>
                 <strong>更新于
-                    :</strong> 2023-12-21 11:53:02
+                    :</strong> 2019-11-29 10:15:00
             </li>
         
         <li>
-            <strong>链接:</strong> https://redefine.ohevan.com/2019/01/01/2018总结/
+            <strong>链接:</strong> https://redefine.ohevan.com/2019/11/29/HBase学习笔记/
         </li>
         <li>
             <strong>
@@ -674,7 +752,7 @@
             <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/%E6%80%BB%E7%BB%93/">#总结</a>&nbsp;
+                        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>&nbsp;
                     </li>
                 
             </ul>
@@ -688,13 +766,13 @@
                     <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="prev"
                         rel="prev"
-                        href="/2019/07/27/%E8%B5%B0%E8%BF%87%E5%8D%81%E5%B9%B4%E7%9A%84%E8%B5%9B%E5%B0%94%E5%8F%B7/"
+                        href="/2019/11/30/11%E6%9C%88%E7%A2%8E%E7%A2%8E%E5%BF%B5%E3%80%82%E6%B0%B4%E9%80%86%E9%80%80%E6%95%A3%EF%BC%81/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">走过十年的赛尔号</span>
+                                <span class="post-nav-title-item">11月碎碎念。水逆退散！</span>
                                 <span class="post-nav-item">上一篇</span>
                             </span>
                         </a>
@@ -704,10 +782,10 @@
                     <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="next"
                         rel="next"
-                        href="/2018/12/17/%E5%8D%9A%E5%AE%A2%E5%BC%80%E5%8F%91%E5%A4%8D%E7%9B%98%EF%BC%88%E6%97%A7%EF%BC%89/"
+                        href="/2019/11/17/%E6%A0%B8%E8%81%9A%E5%8F%98%E5%BF%97%E6%84%BF%E8%80%85%E5%88%9D%E4%BD%93%E9%AA%8C/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">博客开发复盘(旧)</span>
+                                <span class="post-nav-title-item">核聚变志愿者初体验</span>
                                 <span class="post-nav-item">下一篇</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -770,8 +848,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
-        <div class="page-title">2018总结</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%A4%A7%E8%B5%B0%E8%BF%90%E7%9A%84%E5%BC%80%E5%A4%B4"><span class="nav-text">不大走运的开头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E7%BB%AD%E4%B8%AD%E6%96%AD%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E8%BF%8E%E6%9D%A5%E8%BD%AC%E6%8A%98%E7%82%B9"><span class="nav-text">继续中断的学习和迎来转折点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%A2%E9%98%9F%E5%90%88%E4%BD%9C"><span class="nav-text">团队合作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-text">最后</span></a></li></ol>
+        <div class="page-title">HBase学习笔记</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-text">是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A"><span class="nav-text">名词解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HBase%E4%B8%AD%E7%9A%84%E8%A1%A8"><span class="nav-text">HBase中的表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HBase%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B"><span class="nav-text">HBase读写流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spilt%E6%93%8D%E4%BD%9C"><span class="nav-text">Spilt操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-text">其他</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">遇到的问题</span></a></li></ol>
 
     </div>
 </div>
