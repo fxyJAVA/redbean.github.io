@@ -44,97 +44,6 @@
       </tags>
   </entry>
   <entry>
-    <title>HBase学习笔记</title>
-    <url>/2019/11/29/HBase%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic.imgdb.cn/item/659dfc3d871b83018ab56c04.png"
-                      alt="97eaf64220a8eef543d1e5a8ed92ff9d.png"
-                ></p>
-<h2 id="是什么？"><a href="#是什么？" class="headerlink" title="是什么？"></a>是什么？</h2><blockquote>
-<p>Hadoop数据库，一个分布式、可伸缩的大数据存储</p>
-</blockquote>
-<p>HBase有两种模式，一种是Standalone，可以基于本地文件系统存储，也可以基于HDFS存储。<br>二是Distributed，又细分为Pseudo-distributed（主要是测试用）和Fully-distributed（推荐生产环境使用）。</p>
-<p>架构：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic.imgdb.cn/item/659dfc3b871b83018ab5689b.png"
-                      alt="45eb7d4a0ff7c437e130f6ed63f6f606.png"
-                ></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>由上图易知，先安装hadoop，再安装zookeeper，最后安装hbase。<br>按照以下基本就能顺利安装好，虽然文章的时间比较早，但并不过时。</p>
-<ol>
-<li><a class="link"   href="https://segmentfault.com/a/1190000009580427" >Hadoop 集群搭建及配置 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link"   href="https://segmentfault.com/a/1190000009582313" >Hbase 集群搭建 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li><a class="link"   href="https://hbase.apache.org/book.html#quickstart" >HBase Quickstar <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><strong>这里要注意各软件之间的兼容性问题</strong>：<br><a class="link"   href="https://hbase.apache.org/book.html#basic.prerequisites" >Basic Prerequisites <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-</ol>
-<h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><p>NameNode：管理NameNode的节点<br>DateNode：存放数据的节点<br>RegionServer，一般与DateNode绑定于同一台机器，即一个DateNode对应一个RegionServer，负责管理被分配到的若干Region</p>
-<p>Region，HBase数据存储管理的基本单位，初写数据时，没有开启预分区的情况表的数据归属一个region ,当随着数据的增多，region开始变大，等到它达到限定的阀值大小时（hbase.hregion.max.filesize默认10G ），变化把region 分裂为两个大小基本相同的region。</p>
-<h2 id="HBase中的表"><a href="#HBase中的表" class="headerlink" title="HBase中的表"></a>HBase中的表</h2><p>一般数据是用字节数组来进行存储。<br>数据在表中的顺序首先按行，然后按列族（ColumnFamily），然后是列限定符，最后是时间戳（反向排序，因此首先返回最新的记录）。</p>
-<p>namespace，表的逻辑分组，一般同一组中的表有类似的用途，表和命名空间的隶属关系在创建表时决定：&lt;namespace&gt;:&lt;table&gt;。</p>
-<p>Rowkey：表的数据先根据RowKey进行字典排序，具有索引的作用，RowKey在表中是不可变的，唯一修改方法是删除再重新插入。一个RowKey可以对应多个列族。</p>
-<p>ColumnFamily：列族，在创建表的时候就固定。数据按照列族进行物理存储，对现有的表增加&#x2F;删除ColumnFamily，必须先禁用该表。</p>
-<p>Column：归属于一个列族，命名规则为列族前缀+限定符（自定义名称），因为可能存在多个version 的可能，Column本身并不确定表中唯一一条单元。</p>
-<p>Column Qualifier：列限定符，个人理解为就是要一个名字，配合着Column Family前缀名字一起使用。</p>
-<p>Cell：结构为{row key, column( &#x3D;<family> + <label>), version} ，字节码形式存储，在表中确定唯一单元，其中version是长整数，以版本递减顺序存储，即每次读取数据会先读取最新的数据。另外列只能存储最大版本个数的数据，当然每个列族可以设立不同的最大版本数，也可以设置一个全局默认的最大版本数。</p>
-<p>Timestamp: 每个Cell都有一个版本号，而时间戳是默认的版本号。当写入数据时，如果没有指定时间，那么默认的时间就是写入数据的RegionServer上的时间，当然也可以自己指定一个timestamp。读取数据的时候，如果没有指定时间，那么返回的就是最新的数据。</p>
-<p>对表或者Coulumn Family的修改会在下一次<strong>major compaction</strong>或<strong>StoreFiles re-write</strong>时生效</p>
-<h2 id="HBase读写流程"><a href="#HBase读写流程" class="headerlink" title="HBase读写流程"></a>HBase读写流程</h2><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic.imgdb.cn/item/659dfc3b871b83018ab5691d.png"
-                      alt="96180b03db349ead0f3c0a5debf934c9.png"
-                ><br>由该图也可以看出RegionServer与Region的关系</p>
-<p>Region：<br>一张表会被分到若干个Region上，Region又会被分配到若干RegionServer上。每个Region都有一个startRowKey和一个endRowKey，代表Region存储Rowkey的范围，按照RowKey存放到对应的Region中（因而要实现数据均衡的存放RowKey的设计是关键），一个RowKey对应的行数据只会存放在一个Region中。<br>Region有一个或多个store，每个store对应一个Column Family。而一个store又包含一个memstore和若干个store file。每个Column Family是分开存放的和分开访问的。</p>
-<p>由Region引出Memstore，Memstore是在RegionServer的主内存中，最近接收的数据都先存放在Memstore，用于排序（因为HDFS是顺序写，不支持排序），同时因为是在内存中也可以发挥出缓存的优势（如对最近数据的修改操作仅会写入一次到Hfile中）。每一次Memstore的flush（Memstore中的数据达到设定的阈值），会为每一个Column Family创建一个新的HFile</p>
-<h2 id="Spilt操作"><a href="#Spilt操作" class="headerlink" title="Spilt操作"></a>Spilt操作</h2><p>流程：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic.imgdb.cn/item/659dfc3d871b83018ab56b72.png"
-                      alt="c9eef168a9ffdf4b42f54e388dd06ac3.png"
-                ><br>Pre-splitting：</p>
-<blockquote>
-<p>一个表刚被创建的时候，Hbase 默认分配一个Region 给表，所有的读写请求都会访问到一个 RegionServer 上的唯一一个 Region。这样就达不到负载均衡的效果了.</p>
-</blockquote>
-<p>pre-split有三种算法：</p>
-<ul>
-<li>HexStringSplit: rowkey是十六进制的字符串作为前缀的</li>
-<li>DecimalStringSplit: rowkey是10进制数字字符串作为前缀的</li>
-<li>UniformSplit: rowkey前缀完全随机</li>
-</ul>
-<p>关于split详细的可参考此篇文章<a class="link"   href="https://www.yneit.com/2019/09/hbase-split-%E7%AE%80%E4%BB%8B.html" >HBase Split 简介 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。<br>。</p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>关于HBase的其他重要但尚未了解的部分</p>
-<ol>
-<li>HBase的ACID问题，同一RowKey满足事务，多行之间是否能支持事务？<a class="link"   href="http://hadoop-hbase.blogspot.com/2012/03/acid-in-hbase.html" >ACID in HBase <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li>RowKey的设计问题，前面提到过表数据分配到Region与RowKey有关，RowKey在查询中又兼具索引的作用，长度的多少又会影响到Memstore的效率。<br><a class="link"   href="https://hbase.apache.org/book.html#rowkey.design" >Rowkey Design <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
-<li>Memstore配置策略，如何避免频繁flush操作。</li>
-</ol>
-<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ol>
-<li>Hadoop集群搭建完成后，使用hdfs dfsadmin -report命令所有项数据都为0，网上搜索解决方案未解决，重新搭建了一遍解决。</li>
-<li>HBase启动时RegionServer无法启动，虚拟机时间同步后再重启解决。</li>
-<li></li>
-</ol>
-]]></content>
-      <tags>
-        <tag>学习笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>再也不见，2019</title>
-    <url>/2019/12/31/%E5%86%8D%E4%B9%9F%E4%B8%8D%E8%A7%81%EF%BC%8C2019/</url>
-    <content><![CDATA[<p>这几天，小镇天气阴沉，没有往日的灿烂阳光。最惬意的事情莫过于听着窗外小雨的嘀嗒声，看看书玩些游戏吃点零食。</p>
-<p>转眼就迎来了2019的最后一天，不知不觉里个人博客磕磕盼盼运行了一年，这一年文章的主要产出在后半段时间，基本保持着每月两篇左右。两个多月没有去打理，刚上去看了眼图片因为https证书过期基本都失效了。本想着在2020之前上线一个新的博客版本（前后端代码重构），可惜重构到大约70%的时候，又跑去做别的事情了，争取2月份发布新的版本吧。新版本的前端页面已经解决了我之前一直苦恼的<strong>页面打包之后样式发生了变化</strong>以及更规范了，后端逻辑也重新理了一遍，还算满意。</p>
-<p>2019的前半部分时间印象里没什么有意思的事情，这期间又重新跑去玩了下童年回忆——赛尔号。主线还是找实习，然后跑深圳实习租房挤可怕的地铁。实习期间也没什么有意思的事情（作为宅男，最有意思的事情也许是宅在宿舍里），就是让我发现作为一个路痴，出行时地图app必保持最新的版本。</p>
-<p>后半部分时间大部分也是在实习，只不过是从深圳转到了广州，得益于公司与学校的地理位置与交通便利，通勤没有在深圳的那般阴影。10月份有感于在大学的时间不多了，于是便开始周末不时读读书籍充电，读到了两本非常喜欢的书：《哈利波特与魔法石》和《时间旅行者的妻子》。期间又参加了一次电玩展的志愿者活动，保持着中奖绝缘体的体质。12月份辞职，除去博客的重构，就是在搞毕设的事情。哦，因为自己拖拉的毛病 ，没及时跟公司签合同，工资少了几千块钱，甚是心痛，引以为戒。</p>
-<p>既然提到了19年喜欢的书，就提其他自己喜欢的。这一年玩的最久的游戏是碧蓝幻想，有过热情退却期，但今年手游玩了一圈，还是碧蓝幻想优秀些。喜欢的番是《慎勇》，可惜小说后面的剧情因为自己手贱的缘故被剧透完了，所以对动画后续期待值也没多少。喜欢的音乐硬要选一个的话《红色高跟鞋》，搭配桥本环奈的二创视频，爱了爱了。喜欢的电影《邻家女孩》（其实本名或许《邻家女优》更准确），个人是偏爱喜剧类的电影。喜欢的剧是《庆余年》，卡司阵容有牌面，剧情是一个我没想到的神奇脑洞。</p>
-<p>今早吃完早餐，路过小学母校，站在门外看了一会操场上热身的学弟学妹。看到已然斑斑白发的校长，想起了主席那句“世界是你们的，也是我们的，但归根到底是你们的”。小学的记忆逐渐在思绪里铺开（且让我唠叨一二）：上学是数着日子过的，都在期待周末，沉迷游戏王，自编自导剧本，玩具是我的演员；和两个死党打乒乓球，街机厅里打三国战纪，黑网吧里4399双人游戏搓键盘……还有半年就要告别学生时代，于我而言更多的恐惧（大概是毕业就业恐惧症吧）,实习前就已经不舍得这大学剩余的时间，想着象牙塔的好。或许不用几年，我就会向现在看小学一样，看别人的大学生活时，就会想起平时并不有感触的大学平淡日子里的种种。李商隐有诗云：“此情可待成追忆，只是当时已惘然”。</p>
-<p>今年最明显的变化是体重上去了，20斤左右，对我这个竹竿子来说是一件好事情，不过尴尬的是小肚腩开始凸显，起初同事提起的时候没在意，以为是吃的太饱撑得，结果后面发现这肚子并没有要收敛的意思，才恍然大悟。2020年，消灭小肚腩，变成八块腹肌吧（笑）。记得小学时校长不知在什么课上说的人有四点应该学会：1.书写优美；2.会开车；3.会折腾电脑；4.会说话；就以此作为我对2020年的展望。</p>
-]]></content>
-      <tags>
-        <tag>总结</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Kafka和kafka Manager笔记</title>
     <url>/2019/11/14/Kafka%E5%92%8Ckafka%20Manager%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="kafka相关"><a href="#kafka相关" class="headerlink" title="kafka相关"></a>kafka相关</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>用一张图概括<br><img  
@@ -344,6 +253,97 @@
       </tags>
   </entry>
   <entry>
+    <title>再也不见，2019</title>
+    <url>/2019/12/31/%E5%86%8D%E4%B9%9F%E4%B8%8D%E8%A7%81%EF%BC%8C2019/</url>
+    <content><![CDATA[<p>这几天，小镇天气阴沉，没有往日的灿烂阳光。最惬意的事情莫过于听着窗外小雨的嘀嗒声，看看书玩些游戏吃点零食。</p>
+<p>转眼就迎来了2019的最后一天，不知不觉里个人博客磕磕盼盼运行了一年，这一年文章的主要产出在后半段时间，基本保持着每月两篇左右。两个多月没有去打理，刚上去看了眼图片因为https证书过期基本都失效了。本想着在2020之前上线一个新的博客版本（前后端代码重构），可惜重构到大约70%的时候，又跑去做别的事情了，争取2月份发布新的版本吧。新版本的前端页面已经解决了我之前一直苦恼的<strong>页面打包之后样式发生了变化</strong>以及更规范了，后端逻辑也重新理了一遍，还算满意。</p>
+<p>2019的前半部分时间印象里没什么有意思的事情，这期间又重新跑去玩了下童年回忆——赛尔号。主线还是找实习，然后跑深圳实习租房挤可怕的地铁。实习期间也没什么有意思的事情（作为宅男，最有意思的事情也许是宅在宿舍里），就是让我发现作为一个路痴，出行时地图app必保持最新的版本。</p>
+<p>后半部分时间大部分也是在实习，只不过是从深圳转到了广州，得益于公司与学校的地理位置与交通便利，通勤没有在深圳的那般阴影。10月份有感于在大学的时间不多了，于是便开始周末不时读读书籍充电，读到了两本非常喜欢的书：《哈利波特与魔法石》和《时间旅行者的妻子》。期间又参加了一次电玩展的志愿者活动，保持着中奖绝缘体的体质。12月份辞职，除去博客的重构，就是在搞毕设的事情。哦，因为自己拖拉的毛病 ，没及时跟公司签合同，工资少了几千块钱，甚是心痛，引以为戒。</p>
+<p>既然提到了19年喜欢的书，就提其他自己喜欢的。这一年玩的最久的游戏是碧蓝幻想，有过热情退却期，但今年手游玩了一圈，还是碧蓝幻想优秀些。喜欢的番是《慎勇》，可惜小说后面的剧情因为自己手贱的缘故被剧透完了，所以对动画后续期待值也没多少。喜欢的音乐硬要选一个的话《红色高跟鞋》，搭配桥本环奈的二创视频，爱了爱了。喜欢的电影《邻家女孩》（其实本名或许《邻家女优》更准确），个人是偏爱喜剧类的电影。喜欢的剧是《庆余年》，卡司阵容有牌面，剧情是一个我没想到的神奇脑洞。</p>
+<p>今早吃完早餐，路过小学母校，站在门外看了一会操场上热身的学弟学妹。看到已然斑斑白发的校长，想起了主席那句“世界是你们的，也是我们的，但归根到底是你们的”。小学的记忆逐渐在思绪里铺开（且让我唠叨一二）：上学是数着日子过的，都在期待周末，沉迷游戏王，自编自导剧本，玩具是我的演员；和两个死党打乒乓球，街机厅里打三国战纪，黑网吧里4399双人游戏搓键盘……还有半年就要告别学生时代，于我而言更多的恐惧（大概是毕业就业恐惧症吧）,实习前就已经不舍得这大学剩余的时间，想着象牙塔的好。或许不用几年，我就会向现在看小学一样，看别人的大学生活时，就会想起平时并不有感触的大学平淡日子里的种种。李商隐有诗云：“此情可待成追忆，只是当时已惘然”。</p>
+<p>今年最明显的变化是体重上去了，20斤左右，对我这个竹竿子来说是一件好事情，不过尴尬的是小肚腩开始凸显，起初同事提起的时候没在意，以为是吃的太饱撑得，结果后面发现这肚子并没有要收敛的意思，才恍然大悟。2020年，消灭小肚腩，变成八块腹肌吧（笑）。记得小学时校长不知在什么课上说的人有四点应该学会：1.书写优美；2.会开车；3.会折腾电脑；4.会说话；就以此作为我对2020年的展望。</p>
+]]></content>
+      <tags>
+        <tag>总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HBase学习笔记</title>
+    <url>/2019/11/29/HBase%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/659dfc3d871b83018ab56c04.png"
+                      alt="97eaf64220a8eef543d1e5a8ed92ff9d.png"
+                ></p>
+<h2 id="是什么？"><a href="#是什么？" class="headerlink" title="是什么？"></a>是什么？</h2><blockquote>
+<p>Hadoop数据库，一个分布式、可伸缩的大数据存储</p>
+</blockquote>
+<p>HBase有两种模式，一种是Standalone，可以基于本地文件系统存储，也可以基于HDFS存储。<br>二是Distributed，又细分为Pseudo-distributed（主要是测试用）和Fully-distributed（推荐生产环境使用）。</p>
+<p>架构：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/659dfc3b871b83018ab5689b.png"
+                      alt="45eb7d4a0ff7c437e130f6ed63f6f606.png"
+                ></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>由上图易知，先安装hadoop，再安装zookeeper，最后安装hbase。<br>按照以下基本就能顺利安装好，虽然文章的时间比较早，但并不过时。</p>
+<ol>
+<li><a class="link"   href="https://segmentfault.com/a/1190000009580427" >Hadoop 集群搭建及配置 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link"   href="https://segmentfault.com/a/1190000009582313" >Hbase 集群搭建 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link"   href="https://hbase.apache.org/book.html#quickstart" >HBase Quickstar <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><strong>这里要注意各软件之间的兼容性问题</strong>：<br><a class="link"   href="https://hbase.apache.org/book.html#basic.prerequisites" >Basic Prerequisites <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+<h2 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h2><p>NameNode：管理NameNode的节点<br>DateNode：存放数据的节点<br>RegionServer，一般与DateNode绑定于同一台机器，即一个DateNode对应一个RegionServer，负责管理被分配到的若干Region</p>
+<p>Region，HBase数据存储管理的基本单位，初写数据时，没有开启预分区的情况表的数据归属一个region ,当随着数据的增多，region开始变大，等到它达到限定的阀值大小时（hbase.hregion.max.filesize默认10G ），变化把region 分裂为两个大小基本相同的region。</p>
+<h2 id="HBase中的表"><a href="#HBase中的表" class="headerlink" title="HBase中的表"></a>HBase中的表</h2><p>一般数据是用字节数组来进行存储。<br>数据在表中的顺序首先按行，然后按列族（ColumnFamily），然后是列限定符，最后是时间戳（反向排序，因此首先返回最新的记录）。</p>
+<p>namespace，表的逻辑分组，一般同一组中的表有类似的用途，表和命名空间的隶属关系在创建表时决定：&lt;namespace&gt;:&lt;table&gt;。</p>
+<p>Rowkey：表的数据先根据RowKey进行字典排序，具有索引的作用，RowKey在表中是不可变的，唯一修改方法是删除再重新插入。一个RowKey可以对应多个列族。</p>
+<p>ColumnFamily：列族，在创建表的时候就固定。数据按照列族进行物理存储，对现有的表增加&#x2F;删除ColumnFamily，必须先禁用该表。</p>
+<p>Column：归属于一个列族，命名规则为列族前缀+限定符（自定义名称），因为可能存在多个version 的可能，Column本身并不确定表中唯一一条单元。</p>
+<p>Column Qualifier：列限定符，个人理解为就是要一个名字，配合着Column Family前缀名字一起使用。</p>
+<p>Cell：结构为{row key, column( &#x3D;<family> + <label>), version} ，字节码形式存储，在表中确定唯一单元，其中version是长整数，以版本递减顺序存储，即每次读取数据会先读取最新的数据。另外列只能存储最大版本个数的数据，当然每个列族可以设立不同的最大版本数，也可以设置一个全局默认的最大版本数。</p>
+<p>Timestamp: 每个Cell都有一个版本号，而时间戳是默认的版本号。当写入数据时，如果没有指定时间，那么默认的时间就是写入数据的RegionServer上的时间，当然也可以自己指定一个timestamp。读取数据的时候，如果没有指定时间，那么返回的就是最新的数据。</p>
+<p>对表或者Coulumn Family的修改会在下一次<strong>major compaction</strong>或<strong>StoreFiles re-write</strong>时生效</p>
+<h2 id="HBase读写流程"><a href="#HBase读写流程" class="headerlink" title="HBase读写流程"></a>HBase读写流程</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/659dfc3b871b83018ab5691d.png"
+                      alt="96180b03db349ead0f3c0a5debf934c9.png"
+                ><br>由该图也可以看出RegionServer与Region的关系</p>
+<p>Region：<br>一张表会被分到若干个Region上，Region又会被分配到若干RegionServer上。每个Region都有一个startRowKey和一个endRowKey，代表Region存储Rowkey的范围，按照RowKey存放到对应的Region中（因而要实现数据均衡的存放RowKey的设计是关键），一个RowKey对应的行数据只会存放在一个Region中。<br>Region有一个或多个store，每个store对应一个Column Family。而一个store又包含一个memstore和若干个store file。每个Column Family是分开存放的和分开访问的。</p>
+<p>由Region引出Memstore，Memstore是在RegionServer的主内存中，最近接收的数据都先存放在Memstore，用于排序（因为HDFS是顺序写，不支持排序），同时因为是在内存中也可以发挥出缓存的优势（如对最近数据的修改操作仅会写入一次到Hfile中）。每一次Memstore的flush（Memstore中的数据达到设定的阈值），会为每一个Column Family创建一个新的HFile</p>
+<h2 id="Spilt操作"><a href="#Spilt操作" class="headerlink" title="Spilt操作"></a>Spilt操作</h2><p>流程：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/659dfc3d871b83018ab56b72.png"
+                      alt="c9eef168a9ffdf4b42f54e388dd06ac3.png"
+                ><br>Pre-splitting：</p>
+<blockquote>
+<p>一个表刚被创建的时候，Hbase 默认分配一个Region 给表，所有的读写请求都会访问到一个 RegionServer 上的唯一一个 Region。这样就达不到负载均衡的效果了.</p>
+</blockquote>
+<p>pre-split有三种算法：</p>
+<ul>
+<li>HexStringSplit: rowkey是十六进制的字符串作为前缀的</li>
+<li>DecimalStringSplit: rowkey是10进制数字字符串作为前缀的</li>
+<li>UniformSplit: rowkey前缀完全随机</li>
+</ul>
+<p>关于split详细的可参考此篇文章<a class="link"   href="https://www.yneit.com/2019/09/hbase-split-%E7%AE%80%E4%BB%8B.html" >HBase Split 简介 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。<br>。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>关于HBase的其他重要但尚未了解的部分</p>
+<ol>
+<li>HBase的ACID问题，同一RowKey满足事务，多行之间是否能支持事务？<a class="link"   href="http://hadoop-hbase.blogspot.com/2012/03/acid-in-hbase.html" >ACID in HBase <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>RowKey的设计问题，前面提到过表数据分配到Region与RowKey有关，RowKey在查询中又兼具索引的作用，长度的多少又会影响到Memstore的效率。<br><a class="link"   href="https://hbase.apache.org/book.html#rowkey.design" >Rowkey Design <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>Memstore配置策略，如何避免频繁flush操作。</li>
+</ol>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ol>
+<li>Hadoop集群搭建完成后，使用hdfs dfsadmin -report命令所有项数据都为0，网上搜索解决方案未解决，重新搭建了一遍解决。</li>
+<li>HBase启动时RegionServer无法启动，虚拟机时间同步后再重启解决。</li>
+<li></li>
+</ol>
+]]></content>
+      <tags>
+        <tag>学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>博客开发复盘(旧)</title>
     <url>/2018/12/17/%E5%8D%9A%E5%AE%A2%E5%BC%80%E5%8F%91%E5%A4%8D%E7%9B%98%EF%BC%88%E6%97%A7%EF%BC%89/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文主要谈谈代码部分，给自己做个总结，顺便给自己未来挖些坑。项目是前后端分离的，理论上来说只要知道接口更换后台是没有什么问题的。</p>
@@ -407,44 +407,6 @@
       </tags>
   </entry>
   <entry>
-    <title>新博客伊始</title>
-    <url>/2023/12/21/%E6%96%B0%E5%8D%9A%E5%AE%A2%E4%BC%8A%E5%A7%8B/</url>
-    <content><![CDATA[<h2 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h2><p>脱离it开发行业之后，印象笔记就再也没打开过了。最近在重启博客，又把印象笔记下了回来，云服务的优势就体现出来了，不会受设备变更或数据损坏影响，迁移也方便。看着以前的笔记、文章安然躺在各个类目下，我的心情也有点泪目。</p>
-<h2 id="关于原博客"><a href="#关于原博客" class="headerlink" title="关于原博客"></a>关于原博客</h2><p>最初搭建博客的原因一是某天看到了个很漂亮的博客（<a class="link"   href="https://2heng.xin/" >樱花庄的白猫 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>），刷新了我的感官体验，原来博客还能这么玩？让我产生要做博客的念头(看ta博客也让我对生活多了几分极客的追求)；二则是当时大二还是大三没做什么有意思、值得吹水的独立项目，感觉博客系统从后端到前端技术上都很有搞头，可以试试；最后则是作为轻度社恐寻求在网络一角倾泄脑中的胡思乱想，现在看来是一个正确的选择。</p>
-<p>建博客的过程不是很顺利，折在写前端上了。自己前端太菜，第一版离预期差的十万八千里，移动端打开没眼看。后面找资料和向师兄请教后，模仿着上文博客删删改改和套一些框架、工具库，才搞出了第二版。似乎是在这里花的精力过多耗尽了热情，博客的后台管理页面偷懒拿github上的模板改了改就用。</p>
-<p>后端代码还算顺利，没踩多少坑，陆续加了接口限流、登录保护、敏感词过滤、邮件通知、支持markdown语法等功能。博客上线后，有段时间能每月有两三篇产出，记录日常，发发恼骚，收录文章和网站。可能页面优化太烂，现在去<a href="">Internet Archive</a>找了下记录，打开只有一个空白页，很遗憾。</p>
-<p>博客停运则是20年入职后自己给自己的压力太大，没状态更新；再则是毕业了阿里云没有学生优惠，网购葛朗台心里很不舒服。博客的事情抛之脑后，期间阿里云几次短信通知要及时做好服务器数据的备份，我也懒得搞，现在重写博客了没存档挺可惜的。</p>
-<h2 id="关于新博客"><a href="#关于新博客" class="headerlink" title="关于新博客"></a>关于新博客</h2><p>重开博客主要基于现在和未来工作的需要，应当勤思考和多练笔，文笔或许不能很快提上去但应该能明显改善语言组织能力。整理以前写的东西，愈发感觉羞耻和写作能力堪忧，对过去的流水账删删改改花了很多时间。</p>
-<p>本着能省则省原则，目前是用github来构建博客，节省掉服务器的开支，以前用的域名涨价了，得换个便宜的域名。不再做什么前后端分离的全栈，用现成的博客框架hexo，clone了一个风格不错、文档齐全、近期有更新的主题。github国内访问不稳定，我自己不借助工具时能访问时而不能，计划搞个码云仓库。评论系统也是，waline用的国际版，不借工具没法使用和看评论，等域名申请下来了好像能解决。</p>
-<h2 id="期望"><a href="#期望" class="headerlink" title="期望"></a>期望</h2><p>工作变动后，能掌控的时间相对多了些，希望能把博客做好。</p>
-]]></content>
-      <tags>
-        <tag>总结</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>核聚变志愿者初体验</title>
-    <url>/2019/11/17/%E6%A0%B8%E8%81%9A%E5%8F%98%E5%BF%97%E6%84%BF%E8%80%85%E5%88%9D%E4%BD%93%E9%AA%8C/</url>
-    <content><![CDATA[<p>9月报名，11月初收到通知，于是有了此番两天半的机核志愿者体验。</p>
-<p>虽然博览馆来过几次（核聚变和萤火虫广州这边基本是在同一个地方办展子），但是依旧会感觉新鲜。跟漫展不同，展会以电玩为主题。跟我负责一块区域的几个志愿者就是电玩发烧友，来展会也是为了能提前体验以及拿到纪念品。，我则是个伪主机玩家，玩的主机游戏不多不少，但通关的寥寥无几，在跟他们聊天时有些梗get不到或者话题接不上，特别是跟机核文化有关的人与事，是真的一脸懵逼。平时机核文章看的少，偶尔看看新游资讯评测之类的，对机核社区文化并未深入了解。</p>
-<p>志愿者负责引导所在展区的玩家，大部分时间都没得坐，站着的时间久了就会明显感觉到腿部的酸痛，腿会不自觉的弯曲来放松。好在没有遇到难应付的玩家。绝大部分玩家体验完游戏都会自觉举手，不会赖在那再玩一遍耽误后面排队的人。偶尔队伍里会有漂亮的女玩家、有趣的coser（社牛的还会跟你互动下）、不认识但似乎有些知名度的游戏up，给重复枯燥的工作增添了一点乐趣。</p>
-<p>展会能玩到些开发中的游戏。我负责的b站区有两款游戏是还没有发行的。其中一款我还蛮期待的——<a class="link"   href="https://indienova.com/g/zhanyaoxing-2" >《斩妖行》 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，2d横版类魂游戏。我对2d横版游戏毫无抵抗力，没到开展时间前就玩了不少次。对于我这种半手残玩家来说体验关难度还行，没花多长时间就打通了。另外在wegame区玩到了之前一直期待的游戏——<a class="link"   href="https://indienova.com/g/neonabyss" >《霓虹深渊》 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，横版加 roguelike像素风游戏，同样是无法抵抗的诱惑，模式基本同以撒的结合，都是进房间，清怪开箱子，换装备，一套装备成型就开始突突突。还有款其他展区没体验上的游戏——《钻头派对》，大乱斗模式的格斗游戏，画风不错。</p>
-<p>展会似乎还有不少有趣之处？比如展台上的二维码是一个ARG解密游戏，看了机核上的<a class="link"   href="https://www.gcores.com/articles/116890" >解密文章 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>我才知道这么一个有趣的解谜游戏。又比如大表哥“亚瑟”以及游戏制作人五十岚孝司空降机核主舞台，挺意外的。只是可惜，我只能在远处眺望等。这样的遗憾或许明年工作以后核聚变碰上双休日才能弥补吧。</p>
-<p>机核展会和漫展倒还是有几个共通之处：场贩很贵，同样的商品要比线上贵不少；需要长时间罚站，亚文化虽小众，但一次活动聚集的人不少，没什么能坐下来休息的地方，可能跟商超设计思路一样吧；coser、表演、玩梗很多。</p>
-<p>两天下来，身心疲惫，又是周末，还得搭地铁返校。这次做志愿者的收获就是两餐盒饭和一堆纪念品（纪念品里的羽衣质量很差，一模就能感觉出来，跟贩售品完全没法比）。以后恐怕没机会也不会再体验了。</p>
-<p>最后放张合照留念。</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic.imgdb.cn/item/659de940871b83018a84cc93.jpg"
-                      alt="核聚变全体工作人员"
-                ></p>
-]]></content>
-      <tags>
-        <tag>杂谈</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>总结和计划</title>
     <url>/2019/08/04/%E6%80%BB%E7%BB%93%E5%92%8C%E8%AE%A1%E5%88%92/</url>
     <content><![CDATA[<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>bigo实习一个月，总体来说体验良好，学到了一些东西如监控系统，TSDB数据库，nginx实现权限验证（这个本想今天写一篇文章单独总结一下的但时间不够了只能拖至下周末），但是业务上没被分配做什么事情，不像前端的同事能做些比较实在的东西，心里不安（危机感，哈哈）。</p>
@@ -460,6 +422,22 @@
 <p>计划写得惭愧，4年了，至今弹幕网和云笔记连新建文件夹都没有。弹幕网放弃了，云笔记可能倒有需求。</p>
 <p>碧蓝幻想至今也还有玩，倒是想不到。</p>
 <p>书籍 蝇王买了没看，雪中悍刀行看了几页因为一处描写没再看下去（买的全套书籍也吃灰了好久）</p>
+]]></content>
+      <tags>
+        <tag>总结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>新博客伊始</title>
+    <url>/2023/12/21/%E6%96%B0%E5%8D%9A%E5%AE%A2%E4%BC%8A%E5%A7%8B/</url>
+    <content><![CDATA[<h2 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h2><p>脱离it开发行业之后，印象笔记就再也没打开过了。最近在重启博客，又把印象笔记下了回来，云服务的优势就体现出来了，不会受设备变更或数据损坏影响，迁移也方便。看着以前的笔记、文章安然躺在各个类目下，我的心情也有点泪目。</p>
+<h2 id="关于原博客"><a href="#关于原博客" class="headerlink" title="关于原博客"></a>关于原博客</h2><p>最初搭建博客的原因一是某天看到了个很漂亮的博客（<a class="link"   href="https://2heng.xin/" >樱花庄的白猫 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>），刷新了我的感官体验，原来博客还能这么玩？让我产生要做博客的念头(看ta博客也让我对生活多了几分极客的追求)；二则是当时大二还是大三没做什么有意思、值得吹水的独立项目，感觉博客系统从后端到前端技术上都很有搞头，可以试试；最后则是作为轻度社恐寻求在网络一角倾泄脑中的胡思乱想，现在看来是一个正确的选择。</p>
+<p>建博客的过程不是很顺利，折在写前端上了。自己前端太菜，第一版离预期差的十万八千里，移动端打开没眼看。后面找资料和向师兄请教后，模仿着上文博客删删改改和套一些框架、工具库，才搞出了第二版。似乎是在这里花的精力过多耗尽了热情，博客的后台管理页面偷懒拿github上的模板改了改就用。</p>
+<p>后端代码还算顺利，没踩多少坑，陆续加了接口限流、登录保护、敏感词过滤、邮件通知、支持markdown语法等功能。博客上线后，有段时间能每月有两三篇产出，记录日常，发发恼骚，收录文章和网站。可能页面优化太烂，现在去<a href="">Internet Archive</a>找了下记录，打开只有一个空白页，很遗憾。</p>
+<p>博客停运则是20年入职后自己给自己的压力太大，没状态更新；再则是毕业了阿里云没有学生优惠，网购葛朗台心里很不舒服。博客的事情抛之脑后，期间阿里云几次短信通知要及时做好服务器数据的备份，我也懒得搞，现在重写博客了没存档挺可惜的。</p>
+<h2 id="关于新博客"><a href="#关于新博客" class="headerlink" title="关于新博客"></a>关于新博客</h2><p>重开博客主要基于现在和未来工作的需要，应当勤思考和多练笔，文笔或许不能很快提上去但应该能明显改善语言组织能力。整理以前写的东西，愈发感觉羞耻和写作能力堪忧，对过去的流水账删删改改花了很多时间。</p>
+<p>本着能省则省原则，目前是用github来构建博客，节省掉服务器的开支，以前用的域名涨价了，得换个便宜的域名。不再做什么前后端分离的全栈，用现成的博客框架hexo，clone了一个风格不错、文档齐全、近期有更新的主题。github国内访问不稳定，我自己不借助工具时能访问时而不能，计划搞个码云仓库。评论系统也是，waline用的国际版，不借工具没法使用和看评论，等域名申请下来了好像能解决。</p>
+<h2 id="期望"><a href="#期望" class="headerlink" title="期望"></a>期望</h2><p>工作变动后，能掌控的时间相对多了些，希望能把博客做好。</p>
 ]]></content>
       <tags>
         <tag>总结</tag>
@@ -504,6 +482,41 @@
 ]]></content>
       <tags>
         <tag>杂谈</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>核聚变志愿者初体验</title>
+    <url>/2019/11/17/%E6%A0%B8%E8%81%9A%E5%8F%98%E5%BF%97%E6%84%BF%E8%80%85%E5%88%9D%E4%BD%93%E9%AA%8C/</url>
+    <content><![CDATA[<p>9月报名，11月初收到通知，于是有了此番两天半的机核志愿者体验。</p>
+<p>虽然博览馆来过几次（核聚变和萤火虫广州这边基本是在同一个地方办展子），但是依旧会感觉新鲜。跟漫展不同，展会以电玩为主题。跟我负责一块区域的几个志愿者就是电玩发烧友，来展会也是为了能提前体验以及拿到纪念品。，我则是个伪主机玩家，玩的主机游戏不多不少，但通关的寥寥无几，在跟他们聊天时有些梗get不到或者话题接不上，特别是跟机核文化有关的人与事，是真的一脸懵逼。平时机核文章看的少，偶尔看看新游资讯评测之类的，对机核社区文化并未深入了解。</p>
+<p>志愿者负责引导所在展区的玩家，大部分时间都没得坐，站着的时间久了就会明显感觉到腿部的酸痛，腿会不自觉的弯曲来放松。好在没有遇到难应付的玩家。绝大部分玩家体验完游戏都会自觉举手，不会赖在那再玩一遍耽误后面排队的人。偶尔队伍里会有漂亮的女玩家、有趣的coser（社牛的还会跟你互动下）、不认识但似乎有些知名度的游戏up，给重复枯燥的工作增添了一点乐趣。</p>
+<p>展会能玩到些开发中的游戏。我负责的b站区有两款游戏是还没有发行的。其中一款我还蛮期待的——<a class="link"   href="https://indienova.com/g/zhanyaoxing-2" >《斩妖行》 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，2d横版类魂游戏。我对2d横版游戏毫无抵抗力，没到开展时间前就玩了不少次。对于我这种半手残玩家来说体验关难度还行，没花多长时间就打通了。另外在wegame区玩到了之前一直期待的游戏——<a class="link"   href="https://indienova.com/g/neonabyss" >《霓虹深渊》 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，横版加 roguelike像素风游戏，同样是无法抵抗的诱惑，模式基本同以撒的结合，都是进房间，清怪开箱子，换装备，一套装备成型就开始突突突。还有款其他展区没体验上的游戏——《钻头派对》，大乱斗模式的格斗游戏，画风不错。</p>
+<p>展会似乎还有不少有趣之处？比如展台上的二维码是一个ARG解密游戏，看了机核上的<a class="link"   href="https://www.gcores.com/articles/116890" >解密文章 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>我才知道这么一个有趣的解谜游戏。又比如大表哥“亚瑟”以及游戏制作人五十岚孝司空降机核主舞台，挺意外的。只是可惜，我只能在远处眺望等。这样的遗憾或许明年工作以后核聚变碰上双休日才能弥补吧。</p>
+<p>机核展会和漫展倒还是有几个共通之处：场贩很贵，同样的商品要比线上贵不少；需要长时间罚站，亚文化虽小众，但一次活动聚集的人不少，没什么能坐下来休息的地方，可能跟商超设计思路一样吧；coser、表演、玩梗很多。</p>
+<p>两天下来，身心疲惫，又是周末，还得搭地铁返校。这次做志愿者的收获就是两餐盒饭和一堆纪念品（纪念品里的羽衣质量很差，一模就能感觉出来，跟贩售品完全没法比）。以后恐怕没机会也不会再体验了。</p>
+<p>最后放张合照留念。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/659de940871b83018a84cc93.jpg"
+                      alt="核聚变全体工作人员"
+                ></p>
+]]></content>
+      <tags>
+        <tag>杂谈</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>滞留村中</title>
+    <url>/2020/03/04/%E6%BB%9E%E7%95%99%E6%9D%91%E4%B8%AD/</url>
+    <content><![CDATA[<p>原本计划是2月1回来，结果因为疫情，村子封路了，不能进，出去要经过村委会、乡政府和医院测温盖章的流程且短期不能再回来，结果2月份2&#x2F;3的时间都呆在了湖南。每天抱着手机，在电影、游戏、论坛间切换。另外给项目补接口修bug，只是效率堪忧，湖南天气不似广东那般温和，是凛冽的冷。早晚不烤火基本就是冻的手脚僵硬，打字都不灵活，遇上阴天的时候，到了中午和下午也得不到缓解。虽然有被炉，但是弟弟妹妹在，很难集中精神。</p>
+<p>疫情渐渐严峻，人与人的隔阂也深刻起来。相隔不过几百米的村与村之间开始设卡封路，各家各户分批轮流出人到关卡24小时看守。这关卡是怎么样的呢？随意点的拿几根粗长的竹子架在路中央，讲究点的就把车打横停在路中央，总之是要封死车辆通行。但有个问题，他封不住走路的人。尽管村子间彼此多互相熟悉，也没办法保证守关卡的人认识村里的全部面孔，特别是外出打工的，所以也还是会有漏网之鱼。村里人因此吵过好几次架，舅舅也告知弟弟妹妹们不要到那几户刚回来的人家去，村里串门的少了很多，大多都是窗门紧闭，阴沉天气下有些压抑。在几次村里人争吵，听到一个还蛮过分的事，村子有一户人家儿子把妻儿丢在疫情更严重的岳阳自己溜回来了。村子间的关系也有些微妙，互相开始有些抵触情绪，禁止邻村人入内的情况常有，险些引发肢体冲突。晚上烤火时也频繁听到村里人诟病某村某人。</p>
+<p>疫情也让人对咳嗽感冒变得敏感起来。姨父不知道从什么时候开始咳嗽，刚开始还没怎么在意，到后面咳嗽严重的时候，我心里也开始担心起来，特意查了查新型肺炎的症状：咳嗽，发热畏冷，乏力。这几个症状姨父都有，加深了我的担忧，我仔细想了想了姨父去过的地方，基本跟我一样没怎么出去过，只是在村子亲戚家里走动过，但村子里并无一例病发案例，病源又从何而起？这样想着我的担心才减轻了几分。好在后来弟弟（三弟）开车带着姨父到乡上诊所看，诊断为咽喉炎还是支气管炎记不清了，之后吃药打针情况有所好转。这期间，我们又去了一趟寺庙敬神为姨父问卦，这个问卦的流程就是：卦师（这次卦师是大外公）向佛像告明问卦者的信息，然后开始向佛像询问缘由，随即将<a class="link"   href="https://baike.baidu.com/item/%E6%8E%B7%E6%9D%AF%E7%AD%8A/3690017" >杯筊(jiǎo) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>往地上掷下，根据阴卦阳卦数，即知结果。姨父的问卦结果已没有印象，只记得遵照卦师的意思由姨父将佛像背回去上香供了一阵子。</p>
+<p>逢年过节，村子里打牌的风气盛行。邻里之间熟络，招呼一声一场麻将就可以开桌了，从白天到黑夜，从深夜到早晨，洗搓之声不绝于耳，万幸不是在自己家里开的局。村里的年轻人这时候也喜欢聚起来打牌，哥哥也几次因为打牌惹得姨妈不高兴。舅舅，舅妈两人也爱打牌，这期间在家里常不见踪影，不是在牌场上就是在去牌场的路上，被姨妈他们数落之后倒是有所收敛。 弟弟妹妹或许是受了影响，也吵着要跟我们打牌，打脱裤子、斗地主、跑得快。我自己是不太打牌的，因为不想输也输不起，不打钱的牌还能玩玩。舅舅夫妻两人忙于牌局，两小孩没人管，他们总会拿舅妈的手机玩，喜欢看抖音上的土味视频（叫什么师姐还是学姐之类的   ），常常笑嘻嘻地模仿。后面姨妈跟舅舅说了情况，他俩手机的使用权被收回去了，又变成只要我们在玩手机就会凑过来看。</p>
+<p>弟弟喜欢玩吃鸡、王者荣耀、qq飞车腾讯系的，我不爱玩这些，他又吵着要看动画，好在番剧方面他和我相投。我说看奥特曼吧，他能说出赛罗、欧布和银河奥特曼；我说看假面骑士，他也能说出时王这部作品。看动画他又给我安利刺客五六七，我跟着他看了几集，的确好看。弟弟还有个有趣的地方就是喜欢听鬼故事，但是又怕得要死。跟他说鬼故事的时候，他会时不时地回头张望，脸上写满了紧张，你停下他又催着你继续讲。妹妹则不一样，每次问她为什么不怕，她就用稚嫩的声音说世上无神鬼（但实际上她很怕黑）。这兄妹两有可爱的地方，也有小孩子的无理取闹，不合他们的意就撒娇发脾气，妹妹被骂的重了就会哭。弟弟性子皮，脸皮也厚。这两兄妹间偶有矛盾，多是零食分配之类的。弟弟比较狡猾，这方面总能占尽便宜。妹妹呢，喜欢有样学样，她看见哥哥在玩什么她就抢着也要玩。有舅舅姨妈“xx你是哥哥要让着妹妹”的尚方宝剑，这是她的优势，弟弟大多数情况是不敢反对的。</p>
+]]></content>
+      <tags>
+        <tag>无稽之谈</tag>
       </tags>
   </entry>
   <entry>
@@ -558,19 +571,6 @@
 ]]></content>
       <tags>
         <tag>学习笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>滞留村中</title>
-    <url>/2020/03/04/%E6%BB%9E%E7%95%99%E6%9D%91%E4%B8%AD/</url>
-    <content><![CDATA[<p>原本计划是2月1回来，结果因为疫情，村子封路了，不能进，出去要经过村委会、乡政府和医院测温盖章的流程且短期不能再回来，结果2月份2&#x2F;3的时间都呆在了湖南。每天抱着手机，在电影、游戏、论坛间切换。另外给项目补接口修bug，只是效率堪忧，湖南天气不似广东那般温和，是凛冽的冷。早晚不烤火基本就是冻的手脚僵硬，打字都不灵活，遇上阴天的时候，到了中午和下午也得不到缓解。虽然有被炉，但是弟弟妹妹在，很难集中精神。</p>
-<p>疫情渐渐严峻，人与人的隔阂也深刻起来。相隔不过几百米的村与村之间开始设卡封路，各家各户分批轮流出人到关卡24小时看守。这关卡是怎么样的呢？随意点的拿几根粗长的竹子架在路中央，讲究点的就把车打横停在路中央，总之是要封死车辆通行。但有个问题，他封不住走路的人。尽管村子间彼此多互相熟悉，也没办法保证守关卡的人认识村里的全部面孔，特别是外出打工的，所以也还是会有漏网之鱼。村里人因此吵过好几次架，舅舅也告知弟弟妹妹们不要到那几户刚回来的人家去，村里串门的少了很多，大多都是窗门紧闭，阴沉天气下有些压抑。在几次村里人争吵，听到一个还蛮过分的事，村子有一户人家儿子把妻儿丢在疫情更严重的岳阳自己溜回来了。村子间的关系也有些微妙，互相开始有些抵触情绪，禁止邻村人入内的情况常有，险些引发肢体冲突。晚上烤火时也频繁听到村里人诟病某村某人。</p>
-<p>疫情也让人对咳嗽感冒变得敏感起来。姨父不知道从什么时候开始咳嗽，刚开始还没怎么在意，到后面咳嗽严重的时候，我心里也开始担心起来，特意查了查新型肺炎的症状：咳嗽，发热畏冷，乏力。这几个症状姨父都有，加深了我的担忧，我仔细想了想了姨父去过的地方，基本跟我一样没怎么出去过，只是在村子亲戚家里走动过，但村子里并无一例病发案例，病源又从何而起？这样想着我的担心才减轻了几分。好在后来弟弟（三弟）开车带着姨父到乡上诊所看，诊断为咽喉炎还是支气管炎记不清了，之后吃药打针情况有所好转。这期间，我们又去了一趟寺庙敬神为姨父问卦，这个问卦的流程就是：卦师（这次卦师是大外公）向佛像告明问卦者的信息，然后开始向佛像询问缘由，随即将<a class="link"   href="https://baike.baidu.com/item/%E6%8E%B7%E6%9D%AF%E7%AD%8A/3690017" >杯筊(jiǎo) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>往地上掷下，根据阴卦阳卦数，即知结果。姨父的问卦结果已没有印象，只记得遵照卦师的意思由姨父将佛像背回去上香供了一阵子。</p>
-<p>逢年过节，村子里打牌的风气盛行。邻里之间熟络，招呼一声一场麻将就可以开桌了，从白天到黑夜，从深夜到早晨，洗搓之声不绝于耳，万幸不是在自己家里开的局。村里的年轻人这时候也喜欢聚起来打牌，哥哥也几次因为打牌惹得姨妈不高兴。舅舅，舅妈两人也爱打牌，这期间在家里常不见踪影，不是在牌场上就是在去牌场的路上，被姨妈他们数落之后倒是有所收敛。 弟弟妹妹或许是受了影响，也吵着要跟我们打牌，打脱裤子、斗地主、跑得快。我自己是不太打牌的，因为不想输也输不起，不打钱的牌还能玩玩。舅舅夫妻两人忙于牌局，两小孩没人管，他们总会拿舅妈的手机玩，喜欢看抖音上的土味视频（叫什么师姐还是学姐之类的   ），常常笑嘻嘻地模仿。后面姨妈跟舅舅说了情况，他俩手机的使用权被收回去了，又变成只要我们在玩手机就会凑过来看。</p>
-<p>弟弟喜欢玩吃鸡、王者荣耀、qq飞车腾讯系的，我不爱玩这些，他又吵着要看动画，好在番剧方面他和我相投。我说看奥特曼吧，他能说出赛罗、欧布和银河奥特曼；我说看假面骑士，他也能说出时王这部作品。看动画他又给我安利刺客五六七，我跟着他看了几集，的确好看。弟弟还有个有趣的地方就是喜欢听鬼故事，但是又怕得要死。跟他说鬼故事的时候，他会时不时地回头张望，脸上写满了紧张，你停下他又催着你继续讲。妹妹则不一样，每次问她为什么不怕，她就用稚嫩的声音说世上无神鬼（但实际上她很怕黑）。这兄妹两有可爱的地方，也有小孩子的无理取闹，不合他们的意就撒娇发脾气，妹妹被骂的重了就会哭。弟弟性子皮，脸皮也厚。这两兄妹间偶有矛盾，多是零食分配之类的。弟弟比较狡猾，这方面总能占尽便宜。妹妹呢，喜欢有样学样，她看见哥哥在玩什么她就抢着也要玩。有舅舅姨妈“xx你是哥哥要让着妹妹”的尚方宝剑，这是她的优势，弟弟大多数情况是不敢反对的。</p>
-]]></content>
-      <tags>
-        <tag>无稽之谈</tag>
       </tags>
   </entry>
   <entry>
