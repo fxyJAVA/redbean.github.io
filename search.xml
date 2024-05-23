@@ -154,36 +154,6 @@
       </tags>
   </entry>
   <entry>
-    <title>博客开发复盘(旧)</title>
-    <url>/2018/12/17/%E5%8D%9A%E5%AE%A2%E5%BC%80%E5%8F%91%E5%A4%8D%E7%9B%98%EF%BC%88%E6%97%A7%EF%BC%89/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文主要谈谈代码部分，给自己做个总结，顺便给自己未来挖些坑。项目是前后端分离的，理论上来说只要知道接口更换后台是没有什么问题的。</p>
-<p><a class="link"   href="https://github.com/fxyJAVA/vue-blog" >前端博客页面 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。<a class="link"   href="https://github.com/fxyJAVA/vue-blog-admin-simple?tab=readme-ov-file" >后台管理页面 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。<a class="link"   href="https://github.com/fxyJAVA/biliob_backend_study" >后台代码 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<h2 id="运行环境："><a href="#运行环境：" class="headerlink" title="运行环境："></a>运行环境：</h2><ul>
-<li>服务器：阿里云（学生优惠每个月9.9元）；</li>
-<li>os：centos 7.2 ；</li>
-<li>jdk：1.8 ；</li>
-<li>mysql：5.7；</li>
-<li>nginx：1.4；</li>
-<li>tomcat：8.5;</li>
-</ul>
-<h2 id="后台"><a href="#后台" class="headerlink" title="后台"></a>后台</h2><p>后台方面主要使用了spring boot框架，持久层使用了mybatis（填坑之一：一般项目里持久层怎么选择？mybatis还是jpa?），缓存使用的是ehcache，数据库使用的是mysql。一些工具包的使用参考了halo博客，如hutool</p>
-<h2 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h2><p>前端主要使用vue框架，vue给我的感觉犹如后端之spring boot。因为偏爱bootstrap的响应式，所以也引入了jquery和bootstrap。css动画用了animate动画库。图标用font-Awesome。懒加载vue-lazyload。后台管理页面主要是在vue-element-admin上做的二次开发。代码高亮。用的是highlight.js。写到这里想想前端很大一部分扩充知识或者说想法来源于<a class="link"   href="https://2heng.xin/" >樱花庄的白猫 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
-<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>vue页面打包后将dist内的文件全部拷贝至服务器某个位置，配置nginx服务器指向该资源（这个其实网上很多资料了犹豫到时到底要不要写。填坑之一：nginx http转成https，跨域，获取真实ip问题），到这一步就可以通过服务器ip加端口就能访问到页面了。接着只需要 再将后台部署上去即可。将后端项目打包后放到服务器某个位置，我这里是用jenkins做的部署，关于jenkins部署，网上有很多详细资料（我自己应该不会填坑）。jar包放到服务器之后后台运行指令：nohup java -jar xxxx.jar ;到这一步，前后端还不算联通，需要我们在nginx上做些配置，如下图：<br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic.imgdb.cn/item/659c9d56871b83018a6f8858.png"
-                     
-                ></p>
-<p>rewrite是一个匹配的正则表达式，proxy_pass后面跟的后台地址以及端口号<br>配置重启nginx，博客页面和后台就对接完毕。</p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>为了提高网站的访问速度，做了小处理：首先路由懒加载必不可少，其次是组件懒加载。图片资源先进行压缩，再上传到图床网站，我这里用的图床是SM.MS（之后切到了又拍云上），压缩网站是TinyPng。这两个都不确保其可靠性和安全性。哪天图床挂了估计够我折腾一阵子，所以上传的图片都得做一个备份。一些js和css引入用的都是外链形式。评论获取qq头像和接口用jsonp跨域调用别人的接口，想用nginx做反向代理但是出错了，所以改成了jsonp。<br>后端接口防爆破是通过全局过滤器实现，接口限流，部分接口做了缓存处理。</p>
-<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><ol>
-<li>没有把导航栏做成动态路由形式的，所以这部分修改时有些麻烦，之后可能会修改下吧。</li>
-<li>页面访问速度还是很慢。</li>
-<li>留言和回复没有做成一张数据表是一大失误，导致数据冗余不说，也直接导致了前端评论部分的代码不能直接封装成一个组件，需要在两处复用，修改非常不便，大部分情况下要改两次</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
     <title>Kafka和kafka Manager笔记</title>
     <url>/2019/11/14/Kafka%E5%92%8Ckafka%20Manager%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="kafka相关"><a href="#kafka相关" class="headerlink" title="kafka相关"></a>kafka相关</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>用一张图概括<br><img  
@@ -408,6 +378,51 @@
       </tags>
   </entry>
   <entry>
+    <title>博客开发复盘(旧)</title>
+    <url>/2018/12/17/%E5%8D%9A%E5%AE%A2%E5%BC%80%E5%8F%91%E5%A4%8D%E7%9B%98%EF%BC%88%E6%97%A7%EF%BC%89/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文主要谈谈代码部分，给自己做个总结，顺便给自己未来挖些坑。项目是前后端分离的，理论上来说只要知道接口更换后台是没有什么问题的。</p>
+<p><a class="link"   href="https://github.com/fxyJAVA/vue-blog" >前端博客页面 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。<a class="link"   href="https://github.com/fxyJAVA/vue-blog-admin-simple?tab=readme-ov-file" >后台管理页面 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。<a class="link"   href="https://github.com/fxyJAVA/biliob_backend_study" >后台代码 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<h2 id="运行环境："><a href="#运行环境：" class="headerlink" title="运行环境："></a>运行环境：</h2><ul>
+<li>服务器：阿里云（学生优惠每个月9.9元）；</li>
+<li>os：centos 7.2 ；</li>
+<li>jdk：1.8 ；</li>
+<li>mysql：5.7；</li>
+<li>nginx：1.4；</li>
+<li>tomcat：8.5;</li>
+</ul>
+<h2 id="后台"><a href="#后台" class="headerlink" title="后台"></a>后台</h2><p>后台方面主要使用了spring boot框架，持久层使用了mybatis（填坑之一：一般项目里持久层怎么选择？mybatis还是jpa?），缓存使用的是ehcache，数据库使用的是mysql。一些工具包的使用参考了halo博客，如hutool</p>
+<h2 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h2><p>前端主要使用vue框架，vue给我的感觉犹如后端之spring boot。因为偏爱bootstrap的响应式，所以也引入了jquery和bootstrap。css动画用了animate动画库。图标用font-Awesome。懒加载vue-lazyload。后台管理页面主要是在vue-element-admin上做的二次开发。代码高亮。用的是highlight.js。写到这里想想前端很大一部分扩充知识或者说想法来源于<a class="link"   href="https://2heng.xin/" >樱花庄的白猫 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。</p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>vue页面打包后将dist内的文件全部拷贝至服务器某个位置，配置nginx服务器指向该资源（这个其实网上很多资料了犹豫到时到底要不要写。填坑之一：nginx http转成https，跨域，获取真实ip问题），到这一步就可以通过服务器ip加端口就能访问到页面了。接着只需要 再将后台部署上去即可。将后端项目打包后放到服务器某个位置，我这里是用jenkins做的部署，关于jenkins部署，网上有很多详细资料（我自己应该不会填坑）。jar包放到服务器之后后台运行指令：nohup java -jar xxxx.jar ;到这一步，前后端还不算联通，需要我们在nginx上做些配置，如下图：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic.imgdb.cn/item/659c9d56871b83018a6f8858.png"
+                     
+                ></p>
+<p>rewrite是一个匹配的正则表达式，proxy_pass后面跟的后台地址以及端口号<br>配置重启nginx，博客页面和后台就对接完毕。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>为了提高网站的访问速度，做了小处理：首先路由懒加载必不可少，其次是组件懒加载。图片资源先进行压缩，再上传到图床网站，我这里用的图床是SM.MS（之后切到了又拍云上），压缩网站是TinyPng。这两个都不确保其可靠性和安全性。哪天图床挂了估计够我折腾一阵子，所以上传的图片都得做一个备份。一些js和css引入用的都是外链形式。评论获取qq头像和接口用jsonp跨域调用别人的接口，想用nginx做反向代理但是出错了，所以改成了jsonp。<br>后端接口防爆破是通过全局过滤器实现，接口限流，部分接口做了缓存处理。</p>
+<h2 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h2><ol>
+<li>没有把导航栏做成动态路由形式的，所以这部分修改时有些麻烦，之后可能会修改下吧。</li>
+<li>页面访问速度还是很慢。</li>
+<li>留言和回复没有做成一张数据表是一大失误，导致数据冗余不说，也直接导致了前端评论部分的代码不能直接封装成一个组件，需要在两处复用，修改非常不便，大部分情况下要改两次</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>回村过年</title>
+    <url>/2020/01/25/%E5%9B%9E%E6%9D%91%E8%BF%87%E5%B9%B4/</url>
+    <content><![CDATA[<p>上一年因为要早点回学校做事情，所以留在惠州过年。这次则是妈念家心切，于是决定回湖南过年。</p>
+<p>因为新型传染病毒的缘故，高铁站里大家基本自觉的带上了口罩，稍稍心安。回家的旅途是枯燥的，座位在过道边，再加上冬天昼短夜长，天早早黑下去，无法一览窗外倒退的景色。只好拿起手机看会《庆余年》，听着轻音乐，半醒半睡中，结束这四小时的旅旅程。</p>
+<p>到长沙之后，堂弟新置了车，又刚好放假，便过来接我们。他这几年的变化和我印象里差别不大，性格一点没变，大大咧咧，心态好，说话也不含糊，这一点我一直希望能学到。山路铺过沥青，虽不崎岖，但坡度夸张，颇有过山车的既视感。爬到山峰顶时，山路十八弯，堂弟的车技毫无保留的释放，在夜晚群山上起舞。前面已是雾凇一片，可见度只有两三米，不自觉打开窗，铺面而来的空气，凛冽而清新，我想着在这里住倒是养性。到舅舅家时已经快晚上十点了，爷爷（外公）一如以前，快到时会在路上候着。每次回家，都会推迟爷爷的睡觉时间，他总会煮好一锅汤，烧几个菜候着，不时就要问问我们到哪了。</p>
+<p>在舅舅家中的日子，天气冷但不如以前，未起雪花，单衣穿件羽绒服就能抵御。因为环保政策，禁烟花爆竹，过年少了记忆中12点响彻不停的爆竹声，五彩烟花。又逢冷雨连绵，村里的篝火晚会都取消了，实在不尽兴。当然，不管在哪里，牌场不受风雨，新型病毒影响，依旧是灯火通明，烟雾缭绕。临睡前是麻将声，造早晨起来也是麻将声。</p>
+<p>游戏里团战开始了，打团同时了解qq群、微信群、微博上的消息。关于肺炎众说纷纭，看的让人迷离。刷到微信一个小资好友在那发牢骚，大意是说广东年后应该封城，不然自己年后上班不安心云云，于是选择了不看也不让看。春晚照旧流量为王，加上武汉的新闻，我实在没什么心情看。难忘今宵，倒是共通的，只不过是一喜一忧罢了。</p>
+<p>初一走亲戚，道一声“新年快乐”或是“过年好”。亲戚家基本都在一个村里真的就只是走马观花般———见面拱手礼问候一声再到下一家，如此反复。之后我想也是这样吧，只是走亲戚的距离远了，需要开车过去。</p>
+<p>湖南人比父亲那边比较重感情讲礼数，邻里交流往来频繁。我们不记得一个亲戚家的具体位置时，附近邻居就会过来热心问是找哪家人，妈说的是亲戚的外称（外号）也能知道是哪家。包红包的多少、包给谁也十分讲究。我对这种习俗不感冒，没太上心，结果走亲戚的时候听到说我给亲戚谁谁买了条烟抽，一脸懵逼，但脸上还是挂着不失礼数的微笑，想来应该是父母以我的名义送的烟吧。自己也快二十有三，不再是那个可以向叔叔阿姨伸手讨红包的年纪，眨眼成年了，即将步入社会工作，倒是自己要孝敬长辈。对人情世故还是得多上点心，免得礼数不到自己浑然不知，弄得长辈心里也失望不舒服。</p>
+]]></content>
+      <tags>
+        <tag>无稽之谈</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>回家路上</title>
     <url>/2019/09/06/%E5%9B%9E%E5%AE%B6%E8%B7%AF%E4%B8%8A/</url>
     <content><![CDATA[<p>9月4日公司三面完申请暂停实习流程。晚上回去前与朋友到楼下奈雪的茶买了一直想试试口味的面包。面包本身一般，与平时便利店买的口味口感差不多，除了好看之外，没有突出之处。因为奶油的甜味导致上面的草莓吃起来很酸，吃的时候面包缝中的奶油也掉了一地。分量比较多吃撑了，比平常晚了一小时入睡。</p>
@@ -420,21 +435,6 @@
 <p>下午三点多，饿了么会员被自动续费了，想着自己用不着就拿来给几个朋友点外卖吧，也算兑现了发工资请客的诺言。（2023年留，对我而言，这就是记录的意义。那天的碎片在脑海里闪现。如今当时的朋友们各奔前程，少有联系了）<br>关于饿了吗，之前看牛客还是脉脉说，阿里他们自己内部的员工也不怎么用饿了吗，都是美团居多，恐怕所言非虚。饿了吗反人类的设计不知道他们的产品经理是怎么想出来的，不知道自己的软件有多难用？</p>
 <p>先是支付的时候你有会员红包，但并不能直接使用，因为需要你先到会员界面领了红包再去下单才有显示；再一个就是进入店家商品详情页后，只要你不是点左上角的“&lt;”,就默认你是退出当前店家而不是返回菜单。第三个就是红包，会员红包升级之后，使用完了想再次把剩下的会员红包升级时，你会发现并不能升级了(针对同一家店)，因为那里会显示已升级了让你立马去使用，但问题是我想继续升级啊（关于这一点不清楚美团是否是这样）。第四点就是饿了吗商家数量及质量远不如美团外卖，能吃的店寥寥无几。最后一点就是数据分析推送吧，互联网通病——信息茧房。美团和饿了吗根据你之前的订单记录，推送给你类似的店，你下过订单的商家，总是出现在搜索列表的前几项里，这一点我不喜欢，减少了新店家被我发现的可能，时间久了看着列表上面的那几家熟悉的店吃饭的胃口都少了几分。</p>
 <p>回到家已经五点多了，离当天笔试开始也没多少时间了，洗了把脸逛逛牛客，看看贴吧，时间也差不多就过去了。</p>
-]]></content>
-      <tags>
-        <tag>无稽之谈</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>回村过年</title>
-    <url>/2020/01/25/%E5%9B%9E%E6%9D%91%E8%BF%87%E5%B9%B4/</url>
-    <content><![CDATA[<p>上一年因为要早点回学校做事情，所以留在惠州过年。这次则是妈念家心切，于是决定回湖南过年。</p>
-<p>因为新型传染病毒的缘故，高铁站里大家基本自觉的带上了口罩，稍稍心安。回家的旅途是枯燥的，座位在过道边，再加上冬天昼短夜长，天早早黑下去，无法一览窗外倒退的景色。只好拿起手机看会《庆余年》，听着轻音乐，半醒半睡中，结束这四小时的旅旅程。</p>
-<p>到长沙之后，堂弟新置了车，又刚好放假，便过来接我们。他这几年的变化和我印象里差别不大，性格一点没变，大大咧咧，心态好，说话也不含糊，这一点我一直希望能学到。山路铺过沥青，虽不崎岖，但坡度夸张，颇有过山车的既视感。爬到山峰顶时，山路十八弯，堂弟的车技毫无保留的释放，在夜晚群山上起舞。前面已是雾凇一片，可见度只有两三米，不自觉打开窗，铺面而来的空气，凛冽而清新，我想着在这里住倒是养性。到舅舅家时已经快晚上十点了，爷爷（外公）一如以前，快到时会在路上候着。每次回家，都会推迟爷爷的睡觉时间，他总会煮好一锅汤，烧几个菜候着，不时就要问问我们到哪了。</p>
-<p>在舅舅家中的日子，天气冷但不如以前，未起雪花，单衣穿件羽绒服就能抵御。因为环保政策，禁烟花爆竹，过年少了记忆中12点响彻不停的爆竹声，五彩烟花。又逢冷雨连绵，村里的篝火晚会都取消了，实在不尽兴。当然，不管在哪里，牌场不受风雨，新型病毒影响，依旧是灯火通明，烟雾缭绕。临睡前是麻将声，造早晨起来也是麻将声。</p>
-<p>游戏里团战开始了，打团同时了解qq群、微信群、微博上的消息。关于肺炎众说纷纭，看的让人迷离。刷到微信一个小资好友在那发牢骚，大意是说广东年后应该封城，不然自己年后上班不安心云云，于是选择了不看也不让看。春晚照旧流量为王，加上武汉的新闻，我实在没什么心情看。难忘今宵，倒是共通的，只不过是一喜一忧罢了。</p>
-<p>初一走亲戚，道一声“新年快乐”或是“过年好”。亲戚家基本都在一个村里真的就只是走马观花般———见面拱手礼问候一声再到下一家，如此反复。之后我想也是这样吧，只是走亲戚的距离远了，需要开车过去。</p>
-<p>湖南人比父亲那边比较重感情讲礼数，邻里交流往来频繁。我们不记得一个亲戚家的具体位置时，附近邻居就会过来热心问是找哪家人，妈说的是亲戚的外称（外号）也能知道是哪家。包红包的多少、包给谁也十分讲究。我对这种习俗不感冒，没太上心，结果走亲戚的时候听到说我给亲戚谁谁买了条烟抽，一脸懵逼，但脸上还是挂着不失礼数的微笑，想来应该是父母以我的名义送的烟吧。自己也快二十有三，不再是那个可以向叔叔阿姨伸手讨红包的年纪，眨眼成年了，即将步入社会工作，倒是自己要孝敬长辈。对人情世故还是得多上点心，免得礼数不到自己浑然不知，弄得长辈心里也失望不舒服。</p>
 ]]></content>
       <tags>
         <tag>无稽之谈</tag>
@@ -500,19 +500,6 @@
       </tags>
   </entry>
   <entry>
-    <title>滞留村中</title>
-    <url>/2020/03/04/%E6%BB%9E%E7%95%99%E6%9D%91%E4%B8%AD/</url>
-    <content><![CDATA[<p>原本计划是2月1回来，结果因为疫情，村子封路了，不能进，出去要经过村委会、乡政府和医院测温盖章的流程且短期不能再回来，结果2月份2&#x2F;3的时间都呆在了湖南。每天抱着手机，在电影、游戏、论坛间切换。另外给项目补接口修bug，只是效率堪忧，湖南天气不似广东那般温和，是凛冽的冷。早晚不烤火基本就是冻的手脚僵硬，打字都不灵活，遇上阴天的时候，到了中午和下午也得不到缓解。虽然有被炉，但是弟弟妹妹在，很难集中精神。</p>
-<p>疫情渐渐严峻，人与人的隔阂也深刻起来。相隔不过几百米的村与村之间开始设卡封路，各家各户分批轮流出人到关卡24小时看守。这关卡是怎么样的呢？随意点的拿几根粗长的竹子架在路中央，讲究点的就把车打横停在路中央，总之是要封死车辆通行。但有个问题，他封不住走路的人。尽管村子间彼此多互相熟悉，也没办法保证守关卡的人认识村里的全部面孔，特别是外出打工的，所以也还是会有漏网之鱼。村里人因此吵过好几次架，舅舅也告知弟弟妹妹们不要到那几户刚回来的人家去，村里串门的少了很多，大多都是窗门紧闭，阴沉天气下有些压抑。在几次村里人争吵，听到一个还蛮过分的事，村子有一户人家儿子把妻儿丢在疫情更严重的岳阳自己溜回来了。村子间的关系也有些微妙，互相开始有些抵触情绪，禁止邻村人入内的情况常有，险些引发肢体冲突。晚上烤火时也频繁听到村里人诟病某村某人。</p>
-<p>疫情也让人对咳嗽感冒变得敏感起来。姨父不知道从什么时候开始咳嗽，刚开始还没怎么在意，到后面咳嗽严重的时候，我心里也开始担心起来，特意查了查新型肺炎的症状：咳嗽，发热畏冷，乏力。这几个症状姨父都有，加深了我的担忧，我仔细想了想了姨父去过的地方，基本跟我一样没怎么出去过，只是在村子亲戚家里走动过，但村子里并无一例病发案例，病源又从何而起？这样想着我的担心才减轻了几分。好在后来弟弟（三弟）开车带着姨父到乡上诊所看，诊断为咽喉炎还是支气管炎记不清了，之后吃药打针情况有所好转。这期间，我们又去了一趟寺庙敬神为姨父问卦，这个问卦的流程就是：卦师（这次卦师是大外公）向佛像告明问卦者的信息，然后开始向佛像询问缘由，随即将<a class="link"   href="https://baike.baidu.com/item/%E6%8E%B7%E6%9D%AF%E7%AD%8A/3690017" >杯筊(jiǎo) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>往地上掷下，根据阴卦阳卦数，即知结果。姨父的问卦结果已没有印象，只记得遵照卦师的意思由姨父将佛像背回去上香供了一阵子。</p>
-<p>逢年过节，村子里打牌的风气盛行。邻里之间熟络，招呼一声一场麻将就可以开桌了，从白天到黑夜，从深夜到早晨，洗搓之声不绝于耳，万幸不是在自己家里开的局。村里的年轻人这时候也喜欢聚起来打牌，哥哥也几次因为打牌惹得姨妈不高兴。舅舅，舅妈两人也爱打牌，这期间在家里常不见踪影，不是在牌场上就是在去牌场的路上，被姨妈他们数落之后倒是有所收敛。 弟弟妹妹或许是受了影响，也吵着要跟我们打牌，打脱裤子、斗地主、跑得快。我自己是不太打牌的，因为不想输也输不起，不打钱的牌还能玩玩。舅舅夫妻两人忙于牌局，两小孩没人管，他们总会拿舅妈的手机玩，喜欢看抖音上的土味视频（叫什么师姐还是学姐之类的   ），常常笑嘻嘻地模仿。后面姨妈跟舅舅说了情况，他俩手机的使用权被收回去了，又变成只要我们在玩手机就会凑过来看。</p>
-<p>弟弟喜欢玩吃鸡、王者荣耀、qq飞车腾讯系的，我不爱玩这些，他又吵着要看动画，好在番剧方面他和我相投。我说看奥特曼吧，他能说出赛罗、欧布和银河奥特曼；我说看假面骑士，他也能说出时王这部作品。看动画他又给我安利刺客五六七，我跟着他看了几集，的确好看。弟弟还有个有趣的地方就是喜欢听鬼故事，但是又怕得要死。跟他说鬼故事的时候，他会时不时地回头张望，脸上写满了紧张，你停下他又催着你继续讲。妹妹则不一样，每次问她为什么不怕，她就用稚嫩的声音说世上无神鬼（但实际上她很怕黑）。这兄妹两有可爱的地方，也有小孩子的无理取闹，不合他们的意就撒娇发脾气，妹妹被骂的重了就会哭。弟弟性子皮，脸皮也厚。这两兄妹间偶有矛盾，多是零食分配之类的。弟弟比较狡猾，这方面总能占尽便宜。妹妹呢，喜欢有样学样，她看见哥哥在玩什么她就抢着也要玩。有舅舅姨妈“xx你是哥哥要让着妹妹”的尚方宝剑，这是她的优势，弟弟大多数情况是不敢反对的。</p>
-]]></content>
-      <tags>
-        <tag>无稽之谈</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>浅聊彩蛋</title>
     <url>/2019/09/29/%E6%B5%85%E8%81%8A%E5%BD%A9%E8%9B%8B/</url>
     <content><![CDATA[<p>看到某篇文章里提到了google搜索的彩蛋：搜索“灭霸”时，右方会出现“无限手套”，点击手套时页面显示数据会随机消失一半，显示的总收集数据也变成了一半。当再点击手套时，消失的信息又会显示回来。</p>
@@ -554,45 +541,16 @@
       </tags>
   </entry>
   <entry>
-    <title>网站&amp;文章推荐2020合集</title>
-    <url>/2020/12/31/%E7%BD%91%E7%AB%99&amp;%E6%96%87%E7%AB%A0%E6%8E%A8%E8%8D%902020%E5%90%88%E9%9B%86/</url>
-    <content><![CDATA[<p><a class="link"   href="https://www.shuxuele.com/index.html" >数学乐 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>入职被安排了解短信网关选择算法，因为有正态分布等相关数学思想，所以在网上找资料回顾，便发现了一个很不错的知识网站，内容详实，条理清晰。其实数学上一些知识还是非常有意思的，有时间可以借此网站补下课。</p>
-<p><a class="link"   href="https://oschina.gitee.io/learn-git-branching/" >Learn Git Branching <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>程序员刚入职场前不知道准备什么时，学习git的使用肯定没错。不用多精通，记住主要的命令就够日常使用了。下面的网站是一个git教程网站，提供实操以及生动形象的动画配合理解。</p>
-<p><a class="link"   href="https://www.jiumodiary.com/" >鸠摩搜索 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>如果还在用百度、谷歌来搜索某本书的电子版资源时是否会被广告或是钓鱼网站所困扰，不妨试试这个专门针对文档的搜索引擎——鸠摩搜索。目前我试着搜了四本彼此无关联性的书，都能成功找到不错的下载源，重要的是目前该网站非常清爽简洁，没有什么广告。如果觉得书写得不错经济允许不妨支持下正版。</p>
-<p><a class="link"   href="https://www.gcores.com/articles/94695" >从《战神4》的LOGO说起，带你解读神秘的北欧卢恩符文 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>最近看了篇报道讲得是一名学生用卢恩符文写作文，结果老师还是花了三个小时将其翻译了过来。这让我萌生了将汉字转为卢恩符文得想法，思路也很简单：将汉字转化为拼音（或者英文）再将其转化为对应的卢恩符文，就像这位老师将卢恩符文转为罗马音再转为日语一样。要想实现这一想法，就必须得对卢恩符文有所了解，而这篇文章恰好可以带我们入门卢恩符文。<br>d</p>
-<p><a class="link"   href="https://www.bbc.com/zhongwen/simp/science-53109403?at_campaign=64&at_custom1=%5Bpost+type%5D&at_medium=custom7&at_custom2=facebook_page&at_custom3=BBC+News+Chinese+(Simplified)&at_custom4=6146BD76-B271-11EA-B5E4-FFEB39982C1E&fbclid=IwAR1PeenlQCnv4ks4AP22tg99W9CcDskqNZRWtgkj-XPP8pXVZ0hCB-Imuk4" >蜜蜂王国解密：你以为是蜂王闺密私语 真相很残酷 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>前几天看了一个段子说老鼠偷了人类的大米人类说它狡猾，而人类偷了蜜蜂的蜂蜜，却只说蜜蜂勤劳。说到蜜蜂，人类对它有多少认识？</p>
-<p><a class="link"   href="https://github.com/pro648/tips/wiki/%E4%BA%94%E7%A7%8D%E5%B8%B8%E8%A7%81%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE" >五种常见流媒体协议 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>在尝试弄弄直播的时候流媒体协议必然是绕不开的，本篇文章是对流媒体协议的简单介绍，同时作者的tip下也对ios开发做了总结，如果对ios开发有兴趣可以看一看。</p>
-<p><a class="link"   href="https://www.gcores.com/articles/124387" >借《Mafia》聊聊真实的西西里黑手党 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>虽然Mafia我没玩过，但《教父》三部曲我是看过的，小说也看了第一部，有时间再补补。如果想了解西西里的黑手党，不妨可以看看本篇文章。</p>
-<p><a class="link"   href="https://www.bilibili.com/video/BV14K4y1b7vp" >用他人的音乐做BGM是否侵权？ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>制作视频的时候大部分人都会为其增加一段音乐烘托气氛，那我们如何判断这一小段音乐的植入构不构成侵权呢？本视频以及第一热评可以为你科普音乐版权方面的知识，让你能在视频音乐方面避一些坑。</p>
-<p><a class="link"   href="https://web.archive.org/" >INTERNET ARCHIVE <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>b站之前出过一个纪念十周年的活动（大概）用户可以访问到十年前的b站看看它曾经的样子，你是否想看看自己经常浏览的网站xx年前是怎样的呢？那么这个网站非常适合你，只需要输入域名选择时间点即可看到该域名对应时间点的样貌（我在浏览bilibili.com这个域名某个时间点的时候发现曾经还是个“哲学”网站）。另外访问该网站需要梯子。</p>
-<p><a class="link"   href="https://www.gcores.com/articles/122716" >聊一聊Puzzle：华容道与其他滑块游戏 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>华容道可以代指一种滑块游戏我是从某一季的最强大脑节目知道的，有段时间会时不时掏出手机玩一盘。刚开始不懂技巧，只会顺着直觉挪动方块，花的时间足够长总会拼成功。后面才上网学了点小技巧，复原的速度有明显提升。本篇文章描述了华容道游戏的一些历史以及各种变体游戏。</p>
-<p><a class="link"   href="https://www.mapstd.com/" >mapstd <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>谷歌地图在线塔防。<del>上课&#x2F;工作摸鱼利器</del>。</p>
-<p><a class="link"   href="https://haveibeenpwned.com/" >‘;–have i been pwned? <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>想知道自己的账户密码是否安全？可以试试这个网站，是国外一位安全专家建立的，简单说就是搜集了因各种原因而被泄漏到网上的数据库跟你的邮箱账号进行匹配（据说作者拿到了约炮网站数据库于是有段时间被人用来作为捉奸工具）。</p>
-<p><a class="link"   href="https://zhuanlan.zhihu.com/p/84572711" >你跳宅舞的样子很专业：不，这都是AI合成的结果 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>前段时间某换脸App软件引起了轩然大波，人人自危。现在又有AI能让一张照片里静态的人不用训练就能变成舞蹈视频中的舞见。（2023年留，ChatGPT又将AI推向了一个新高度，AI在图像、文字上的处理能力也让我大为震撼。如果要总结这一年的热词，AI必占一席，而2023年也被不少人誉为生成式AI之年。）</p>
-<p><a class="link"   href="https://www.gcores.com/articles/121249" >童谣是怎么一步步发展到今天这样的 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>说起童谣，你还记得多少？“蚂蚁搬家蛇过道，明日必有大雨到”，“小孩小孩你别馋，过了腊八就是年”。该篇文章是一位00后作者对童谣发展的一个探究。</p>
-<p><a class="link"   href="https://www.bilibili.com/read/cv4680782?from=category_0" >世界上第一个“超级传播者”，是怎么被发现的 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>如果一个自身健康的病菌传播者出现在你身边且当前医疗手段无法治愈应该如何处理？这篇文章让我想起了一本小说《岛》。</p>
-<p><a class="link"   href="https://www.gcores.com/articles/119489" >通过《驯龙高手》聊聊有关物种灭绝的一些事 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>对物种灭绝的简略科普。</p>
-<p><a class="link"   href="https://www.bilibili.com/video/av82067647?from=search&seid=1708577164723361293" >你知道奶茶加盟到底有多坑人吗？ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>我的一位同学就想过做某品牌的奶茶店，可惜后面因为加盟费太高放弃了。没想到加盟店也有这么多花花肠子（或者说每个行业都有它自己的套路吧）。万金油防骗指南：摆明了有钱赚的东西别人为什么要让给你做？</p>
-<p><a class="link"   href="https://www.bbc.com/ukchina/simp/vert_earth/2015/10/151001_vert_earth_truth-about-pigs" >打破人们对于猪的错误认知 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>猪肉涨价了，吃不起我就看看。</p>
-<p><a class="link"   href="https://www.degraeve.com/img2txt.php" >IMG2TXT: ASCII Art Made Easy! <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>说起图片转文字就让我想起了bad apple转成文本播放的案例，原理就是把原视频每一帧都转成ASCII码，再按顺序输出。这就是一个图像转换成ASCII的网站，同时也提供了其他的工具，像图片颜色提取，网页翻译器和生成彩虹字样式等。</p>
-<p><a class="link"   href="https://www.bilibili.com/read/cv4079473" >小神龙俱乐部的《艺术创想》火了18年，为什么消失了？ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>艺术创想可以说是我小学最喜欢的栏目(还有同样非常喜欢的《课间好时光》)，因为那个总是穿着红色衣服的尼尔叔叔，我也开始有意识的收集家里不要的废纸盒。跟着做了不少“假冒伪劣产品”。那盆神奇的白色乳胶是我童年最想要的东西之一。</p>
-<p><a class="link"   href="https://www.gcores.com/articles/118523" >《要素过多的英雄作成指北》—古希腊篇 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>谁不曾中二过？谁不曾想象构思过自己内心的英雄形象？这篇文章就是以希腊神话为基础，将神话故事人物，考古研究等和凭空创造的英雄串成一条线，从出生到落幕的每一步构思都很考究（个人感观），使得读起来毫不突兀。</p>
-<p><a class="link"   href="https://musclewiki.org/" >musclewiki <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>一个关于健身的网站，哪里要练点哪里，图文并茂。</p>
-<p><a class="link"   href="https://stellarium.org/" >Stellarium <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>在阮一峰的科技周报里看到推荐的关于天空的网站，钟爱它夜晚下的星空，渲染的很漂亮，开发者估计是个细节怪，还贴心的注明了星球名称、距离、大小，赤经纬等。</p>
-<p><a class="link"   href="http://www.duxieren.com/" >读写人 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>网速的飞跃提升价格适合的智能机，我们逐渐从以前按键机的文字阅读里不知不觉跌入视听娱乐的漩涡中，似乎文字不再那么有魅力，只在你我的毕业论文工作周报中发挥着余热。不妨让我们在视听之余留点空间，重拾曾经阅读文字的乐趣。</p>
-<p><a class="link"   href="https://yq.aliyun.com/articles/577708?spm=a2c41.11181499.0.0" >CDN之我见 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>对CDN一直仅停留在概念上：加入CNAME域名解析。优化访问速度。通过这篇文章加深了对CDN的理解。</p>
-<p><a class="link"   href="http://blog.xiayf.cn/2016/01/24/base64-encoding/" >Base64编码原理与应用 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>偶然想到Base64是否会对不同的字符串生成相同的结果，了解了Base64的基本原理，算是解惑了。</p>
-<p><a class="link"   href="https://deerchao.net/tutorials/regex/regex.htm" >正则表达式30分钟入门教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>高质量的正则表达式博文，我把它当做工具书使用。</p>
-<p><a class="link"   href="https://zeroroku.com/bilibili" >Zeroroku-数据观测站 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>biliob同作者的数据新站点，能看up粉丝数情况，目前可视化信息比biliob少。</p>
-<h2 id="已失效"><a href="#已失效" class="headerlink" title="已失效"></a>已失效</h2><p><del><a class="link"   href="https://brenner8023.github.io/gdut-nav/" >工大导航_团结勤奋是创新 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br>同校不知名学长(大概)做的一个收录网站，除了本校学生经常要用到的网站之外，还收录了许多非常实用有趣的网站，话说很久没见过这么干净的收录网站了，而且有的被收录网站内容也十分干净。</p>
-<p><del><a class="link"   href="http://tool.uixsj.cn/" >现实君工具箱 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br>偶然发现的收录型网站，内容及其丰富，总有一款适合你。（就搬运这个网站上的工具就能水很多期了，哈哈）</p>
-<p><del><a class="link"   href="https://www.biliob.com/" >BiliOB观测者 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br><del>如果你是b站的深度用户&#x2F;up，你或许会留意up主的涨粉，视频播放数，点赞数等数据（想起一句话，互联网产品如何如何数据说话），那么这是一个非常适合你观察自己或其他up主数据的一个实时数据汇总网站。我个人看了下粉丝榜首“老番茄”一年下来粉丝数翻将近两倍（涨了将近400万粉），十分夸张。另外该网站的技术栈看了下，感觉应该能照着写一个这样的网站（2023年留，这个网站好久之前就已经停了，因为被b站官方发邮件了。站长的代码我那时候fork了一份，印象里后端技术栈不复杂，很适合作相关框架的入门学习材料）。</del></p>
-<p><del><a class="link"   href="https://www.bilibili.com/read/cv4370122?share_medium=android&share_source=weixin&bbid=XY3D550316AF47051D25D1ABF705227CF0223&ts=1581312891849" >动物“装死”到底有多好用？它们分分钟死给你看 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br>我们总说遇到熊就装死来躲避，实际上许多动物也会通过装死来逃避捕食者的猎杀，它们的装死技巧要比人类高明许多。</p>
-<p><del><a class="link"   href="http://www.bewindoweb.com/dwg.php" >三颗豆子 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br>收录型网站，作用不多说，至少目前我写论文用到了，以及在线工具栏的收录工具也用到了不少，最关键的是该网站友链同样收录了几个满满干货的dalao，强推（竟然失效了，遗憾…）。</p>
-<p><del><a class="link"   href="https://www.bilibili.com/read/cv4474525" >西方“鼠王”的恐怖传说，几十只老鼠尾巴交缠成的痛苦之轮 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br>一直以为所谓鼠王就是指老鼠里的老大（大概就像以为小熊猫是熊猫吧），没想到现实中鼠王是这么猎奇的一个存在。</p>
+    <title>滞留村中</title>
+    <url>/2020/03/04/%E6%BB%9E%E7%95%99%E6%9D%91%E4%B8%AD/</url>
+    <content><![CDATA[<p>原本计划是2月1回来，结果因为疫情，村子封路了，不能进，出去要经过村委会、乡政府和医院测温盖章的流程且短期不能再回来，结果2月份2&#x2F;3的时间都呆在了湖南。每天抱着手机，在电影、游戏、论坛间切换。另外给项目补接口修bug，只是效率堪忧，湖南天气不似广东那般温和，是凛冽的冷。早晚不烤火基本就是冻的手脚僵硬，打字都不灵活，遇上阴天的时候，到了中午和下午也得不到缓解。虽然有被炉，但是弟弟妹妹在，很难集中精神。</p>
+<p>疫情渐渐严峻，人与人的隔阂也深刻起来。相隔不过几百米的村与村之间开始设卡封路，各家各户分批轮流出人到关卡24小时看守。这关卡是怎么样的呢？随意点的拿几根粗长的竹子架在路中央，讲究点的就把车打横停在路中央，总之是要封死车辆通行。但有个问题，他封不住走路的人。尽管村子间彼此多互相熟悉，也没办法保证守关卡的人认识村里的全部面孔，特别是外出打工的，所以也还是会有漏网之鱼。村里人因此吵过好几次架，舅舅也告知弟弟妹妹们不要到那几户刚回来的人家去，村里串门的少了很多，大多都是窗门紧闭，阴沉天气下有些压抑。在几次村里人争吵，听到一个还蛮过分的事，村子有一户人家儿子把妻儿丢在疫情更严重的岳阳自己溜回来了。村子间的关系也有些微妙，互相开始有些抵触情绪，禁止邻村人入内的情况常有，险些引发肢体冲突。晚上烤火时也频繁听到村里人诟病某村某人。</p>
+<p>疫情也让人对咳嗽感冒变得敏感起来。姨父不知道从什么时候开始咳嗽，刚开始还没怎么在意，到后面咳嗽严重的时候，我心里也开始担心起来，特意查了查新型肺炎的症状：咳嗽，发热畏冷，乏力。这几个症状姨父都有，加深了我的担忧，我仔细想了想了姨父去过的地方，基本跟我一样没怎么出去过，只是在村子亲戚家里走动过，但村子里并无一例病发案例，病源又从何而起？这样想着我的担心才减轻了几分。好在后来弟弟（三弟）开车带着姨父到乡上诊所看，诊断为咽喉炎还是支气管炎记不清了，之后吃药打针情况有所好转。这期间，我们又去了一趟寺庙敬神为姨父问卦，这个问卦的流程就是：卦师（这次卦师是大外公）向佛像告明问卦者的信息，然后开始向佛像询问缘由，随即将<a class="link"   href="https://baike.baidu.com/item/%E6%8E%B7%E6%9D%AF%E7%AD%8A/3690017" >杯筊(jiǎo) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>往地上掷下，根据阴卦阳卦数，即知结果。姨父的问卦结果已没有印象，只记得遵照卦师的意思由姨父将佛像背回去上香供了一阵子。</p>
+<p>逢年过节，村子里打牌的风气盛行。邻里之间熟络，招呼一声一场麻将就可以开桌了，从白天到黑夜，从深夜到早晨，洗搓之声不绝于耳，万幸不是在自己家里开的局。村里的年轻人这时候也喜欢聚起来打牌，哥哥也几次因为打牌惹得姨妈不高兴。舅舅，舅妈两人也爱打牌，这期间在家里常不见踪影，不是在牌场上就是在去牌场的路上，被姨妈他们数落之后倒是有所收敛。 弟弟妹妹或许是受了影响，也吵着要跟我们打牌，打脱裤子、斗地主、跑得快。我自己是不太打牌的，因为不想输也输不起，不打钱的牌还能玩玩。舅舅夫妻两人忙于牌局，两小孩没人管，他们总会拿舅妈的手机玩，喜欢看抖音上的土味视频（叫什么师姐还是学姐之类的   ），常常笑嘻嘻地模仿。后面姨妈跟舅舅说了情况，他俩手机的使用权被收回去了，又变成只要我们在玩手机就会凑过来看。</p>
+<p>弟弟喜欢玩吃鸡、王者荣耀、qq飞车腾讯系的，我不爱玩这些，他又吵着要看动画，好在番剧方面他和我相投。我说看奥特曼吧，他能说出赛罗、欧布和银河奥特曼；我说看假面骑士，他也能说出时王这部作品。看动画他又给我安利刺客五六七，我跟着他看了几集，的确好看。弟弟还有个有趣的地方就是喜欢听鬼故事，但是又怕得要死。跟他说鬼故事的时候，他会时不时地回头张望，脸上写满了紧张，你停下他又催着你继续讲。妹妹则不一样，每次问她为什么不怕，她就用稚嫩的声音说世上无神鬼（但实际上她很怕黑）。这兄妹两有可爱的地方，也有小孩子的无理取闹，不合他们的意就撒娇发脾气，妹妹被骂的重了就会哭。弟弟性子皮，脸皮也厚。这两兄妹间偶有矛盾，多是零食分配之类的。弟弟比较狡猾，这方面总能占尽便宜。妹妹呢，喜欢有样学样，她看见哥哥在玩什么她就抢着也要玩。有舅舅姨妈“xx你是哥哥要让着妹妹”的尚方宝剑，这是她的优势，弟弟大多数情况是不敢反对的。</p>
 ]]></content>
       <tags>
-        <tag>“网文”收录</tag>
+        <tag>无稽之谈</tag>
       </tags>
   </entry>
   <entry>
@@ -647,6 +605,48 @@
 ]]></content>
       <tags>
         <tag>学习笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网站&amp;文章推荐2020合集</title>
+    <url>/2020/12/31/%E7%BD%91%E7%AB%99&amp;%E6%96%87%E7%AB%A0%E6%8E%A8%E8%8D%902020%E5%90%88%E9%9B%86/</url>
+    <content><![CDATA[<p><a class="link"   href="https://www.shuxuele.com/index.html" >数学乐 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>入职被安排了解短信网关选择算法，因为有正态分布等相关数学思想，所以在网上找资料回顾，便发现了一个很不错的知识网站，内容详实，条理清晰。其实数学上一些知识还是非常有意思的，有时间可以借此网站补下课。</p>
+<p><a class="link"   href="https://oschina.gitee.io/learn-git-branching/" >Learn Git Branching <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>程序员刚入职场前不知道准备什么时，学习git的使用肯定没错。不用多精通，记住主要的命令就够日常使用了。下面的网站是一个git教程网站，提供实操以及生动形象的动画配合理解。</p>
+<p><a class="link"   href="https://www.jiumodiary.com/" >鸠摩搜索 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>如果还在用百度、谷歌来搜索某本书的电子版资源时是否会被广告或是钓鱼网站所困扰，不妨试试这个专门针对文档的搜索引擎——鸠摩搜索。目前我试着搜了四本彼此无关联性的书，都能成功找到不错的下载源，重要的是目前该网站非常清爽简洁，没有什么广告。如果觉得书写得不错经济允许不妨支持下正版。</p>
+<p><a class="link"   href="https://www.gcores.com/articles/94695" >从《战神4》的LOGO说起，带你解读神秘的北欧卢恩符文 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>最近看了篇报道讲得是一名学生用卢恩符文写作文，结果老师还是花了三个小时将其翻译了过来。这让我萌生了将汉字转为卢恩符文得想法，思路也很简单：将汉字转化为拼音（或者英文）再将其转化为对应的卢恩符文，就像这位老师将卢恩符文转为罗马音再转为日语一样。要想实现这一想法，就必须得对卢恩符文有所了解，而这篇文章恰好可以带我们入门卢恩符文。<br>d</p>
+<p><a class="link"   href="https://www.bbc.com/zhongwen/simp/science-53109403?at_campaign=64&at_custom1=%5Bpost+type%5D&at_medium=custom7&at_custom2=facebook_page&at_custom3=BBC+News+Chinese+(Simplified)&at_custom4=6146BD76-B271-11EA-B5E4-FFEB39982C1E&fbclid=IwAR1PeenlQCnv4ks4AP22tg99W9CcDskqNZRWtgkj-XPP8pXVZ0hCB-Imuk4" >蜜蜂王国解密：你以为是蜂王闺密私语 真相很残酷 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>前几天看了一个段子说老鼠偷了人类的大米人类说它狡猾，而人类偷了蜜蜂的蜂蜜，却只说蜜蜂勤劳。说到蜜蜂，人类对它有多少认识？</p>
+<p><a class="link"   href="https://github.com/pro648/tips/wiki/%E4%BA%94%E7%A7%8D%E5%B8%B8%E8%A7%81%E6%B5%81%E5%AA%92%E4%BD%93%E5%8D%8F%E8%AE%AE" >五种常见流媒体协议 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>在尝试弄弄直播的时候流媒体协议必然是绕不开的，本篇文章是对流媒体协议的简单介绍，同时作者的tip下也对ios开发做了总结，如果对ios开发有兴趣可以看一看。</p>
+<p><a class="link"   href="https://www.gcores.com/articles/124387" >借《Mafia》聊聊真实的西西里黑手党 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>虽然Mafia我没玩过，但《教父》三部曲我是看过的，小说也看了第一部，有时间再补补。如果想了解西西里的黑手党，不妨可以看看本篇文章。</p>
+<p><a class="link"   href="https://www.bilibili.com/video/BV14K4y1b7vp" >用他人的音乐做BGM是否侵权？ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>制作视频的时候大部分人都会为其增加一段音乐烘托气氛，那我们如何判断这一小段音乐的植入构不构成侵权呢？本视频以及第一热评可以为你科普音乐版权方面的知识，让你能在视频音乐方面避一些坑。</p>
+<p><a class="link"   href="https://web.archive.org/" >INTERNET ARCHIVE <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>b站之前出过一个纪念十周年的活动（大概）用户可以访问到十年前的b站看看它曾经的样子，你是否想看看自己经常浏览的网站xx年前是怎样的呢？那么这个网站非常适合你，只需要输入域名选择时间点即可看到该域名对应时间点的样貌（我在浏览bilibili.com这个域名某个时间点的时候发现曾经还是个“哲学”网站）。另外访问该网站需要梯子。</p>
+<p><a class="link"   href="https://www.gcores.com/articles/122716" >聊一聊Puzzle：华容道与其他滑块游戏 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>华容道可以代指一种滑块游戏我是从某一季的最强大脑节目知道的，有段时间会时不时掏出手机玩一盘。刚开始不懂技巧，只会顺着直觉挪动方块，花的时间足够长总会拼成功。后面才上网学了点小技巧，复原的速度有明显提升。本篇文章描述了华容道游戏的一些历史以及各种变体游戏。</p>
+<p><a class="link"   href="https://www.mapstd.com/" >mapstd <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>谷歌地图在线塔防。<del>上课&#x2F;工作摸鱼利器</del>。</p>
+<p><a class="link"   href="https://haveibeenpwned.com/" >‘;–have i been pwned? <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>想知道自己的账户密码是否安全？可以试试这个网站，是国外一位安全专家建立的，简单说就是搜集了因各种原因而被泄漏到网上的数据库跟你的邮箱账号进行匹配（据说作者拿到了约炮网站数据库于是有段时间被人用来作为捉奸工具）。</p>
+<p><a class="link"   href="https://zhuanlan.zhihu.com/p/84572711" >你跳宅舞的样子很专业：不，这都是AI合成的结果 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>前段时间某换脸App软件引起了轩然大波，人人自危。现在又有AI能让一张照片里静态的人不用训练就能变成舞蹈视频中的舞见。（2023年留，ChatGPT又将AI推向了一个新高度，AI在图像、文字上的处理能力也让我大为震撼。如果要总结这一年的热词，AI必占一席，而2023年也被不少人誉为生成式AI之年。）</p>
+<p><a class="link"   href="https://www.gcores.com/articles/121249" >童谣是怎么一步步发展到今天这样的 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>说起童谣，你还记得多少？“蚂蚁搬家蛇过道，明日必有大雨到”，“小孩小孩你别馋，过了腊八就是年”。该篇文章是一位00后作者对童谣发展的一个探究。</p>
+<p><a class="link"   href="https://www.bilibili.com/read/cv4680782?from=category_0" >世界上第一个“超级传播者”，是怎么被发现的 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>如果一个自身健康的病菌传播者出现在你身边且当前医疗手段无法治愈应该如何处理？这篇文章让我想起了一本小说《岛》。</p>
+<p><a class="link"   href="https://www.gcores.com/articles/119489" >通过《驯龙高手》聊聊有关物种灭绝的一些事 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>对物种灭绝的简略科普。</p>
+<p><a class="link"   href="https://www.bilibili.com/video/av82067647?from=search&seid=1708577164723361293" >你知道奶茶加盟到底有多坑人吗？ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>我的一位同学就想过做某品牌的奶茶店，可惜后面因为加盟费太高放弃了。没想到加盟店也有这么多花花肠子（或者说每个行业都有它自己的套路吧）。万金油防骗指南：摆明了有钱赚的东西别人为什么要让给你做？</p>
+<p><a class="link"   href="https://www.bbc.com/ukchina/simp/vert_earth/2015/10/151001_vert_earth_truth-about-pigs" >打破人们对于猪的错误认知 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>猪肉涨价了，吃不起我就看看。</p>
+<p><a class="link"   href="https://www.degraeve.com/img2txt.php" >IMG2TXT: ASCII Art Made Easy! <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>说起图片转文字就让我想起了bad apple转成文本播放的案例，原理就是把原视频每一帧都转成ASCII码，再按顺序输出。这就是一个图像转换成ASCII的网站，同时也提供了其他的工具，像图片颜色提取，网页翻译器和生成彩虹字样式等。</p>
+<p><a class="link"   href="https://www.bilibili.com/read/cv4079473" >小神龙俱乐部的《艺术创想》火了18年，为什么消失了？ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>艺术创想可以说是我小学最喜欢的栏目(还有同样非常喜欢的《课间好时光》)，因为那个总是穿着红色衣服的尼尔叔叔，我也开始有意识的收集家里不要的废纸盒。跟着做了不少“假冒伪劣产品”。那盆神奇的白色乳胶是我童年最想要的东西之一。</p>
+<p><a class="link"   href="https://www.gcores.com/articles/118523" >《要素过多的英雄作成指北》—古希腊篇 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>谁不曾中二过？谁不曾想象构思过自己内心的英雄形象？这篇文章就是以希腊神话为基础，将神话故事人物，考古研究等和凭空创造的英雄串成一条线，从出生到落幕的每一步构思都很考究（个人感观），使得读起来毫不突兀。</p>
+<p><a class="link"   href="https://musclewiki.org/" >musclewiki <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>一个关于健身的网站，哪里要练点哪里，图文并茂。</p>
+<p><a class="link"   href="https://stellarium.org/" >Stellarium <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>在阮一峰的科技周报里看到推荐的关于天空的网站，钟爱它夜晚下的星空，渲染的很漂亮，开发者估计是个细节怪，还贴心的注明了星球名称、距离、大小，赤经纬等。</p>
+<p><a class="link"   href="http://www.duxieren.com/" >读写人 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>网速的飞跃提升价格适合的智能机，我们逐渐从以前按键机的文字阅读里不知不觉跌入视听娱乐的漩涡中，似乎文字不再那么有魅力，只在你我的毕业论文工作周报中发挥着余热。不妨让我们在视听之余留点空间，重拾曾经阅读文字的乐趣。</p>
+<p><a class="link"   href="https://yq.aliyun.com/articles/577708?spm=a2c41.11181499.0.0" >CDN之我见 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>对CDN一直仅停留在概念上：加入CNAME域名解析。优化访问速度。通过这篇文章加深了对CDN的理解。</p>
+<p><a class="link"   href="http://blog.xiayf.cn/2016/01/24/base64-encoding/" >Base64编码原理与应用 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>偶然想到Base64是否会对不同的字符串生成相同的结果，了解了Base64的基本原理，算是解惑了。</p>
+<p><a class="link"   href="https://deerchao.net/tutorials/regex/regex.htm" >正则表达式30分钟入门教程 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>高质量的正则表达式博文，我把它当做工具书使用。</p>
+<p><a class="link"   href="https://zeroroku.com/bilibili" >Zeroroku-数据观测站 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>biliob同作者的数据新站点，能看up粉丝数情况，目前可视化信息比biliob少。</p>
+<h2 id="已失效"><a href="#已失效" class="headerlink" title="已失效"></a>已失效</h2><p><del><a class="link"   href="https://brenner8023.github.io/gdut-nav/" >工大导航_团结勤奋是创新 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br>同校不知名学长(大概)做的一个收录网站，除了本校学生经常要用到的网站之外，还收录了许多非常实用有趣的网站，话说很久没见过这么干净的收录网站了，而且有的被收录网站内容也十分干净。</p>
+<p><del><a class="link"   href="http://tool.uixsj.cn/" >现实君工具箱 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br>偶然发现的收录型网站，内容及其丰富，总有一款适合你。（就搬运这个网站上的工具就能水很多期了，哈哈）</p>
+<p><del><a class="link"   href="https://www.biliob.com/" >BiliOB观测者 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br><del>如果你是b站的深度用户&#x2F;up，你或许会留意up主的涨粉，视频播放数，点赞数等数据（想起一句话，互联网产品如何如何数据说话），那么这是一个非常适合你观察自己或其他up主数据的一个实时数据汇总网站。我个人看了下粉丝榜首“老番茄”一年下来粉丝数翻将近两倍（涨了将近400万粉），十分夸张。另外该网站的技术栈看了下，感觉应该能照着写一个这样的网站（2023年留，这个网站好久之前就已经停了，因为被b站官方发邮件了。站长的代码我那时候fork了一份，印象里后端技术栈不复杂，很适合作相关框架的入门学习材料）。</del></p>
+<p><del><a class="link"   href="https://www.bilibili.com/read/cv4370122?share_medium=android&share_source=weixin&bbid=XY3D550316AF47051D25D1ABF705227CF0223&ts=1581312891849" >动物“装死”到底有多好用？它们分分钟死给你看 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br>我们总说遇到熊就装死来躲避，实际上许多动物也会通过装死来逃避捕食者的猎杀，它们的装死技巧要比人类高明许多。</p>
+<p><del><a class="link"   href="http://www.bewindoweb.com/dwg.php" >三颗豆子 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br>收录型网站，作用不多说，至少目前我写论文用到了，以及在线工具栏的收录工具也用到了不少，最关键的是该网站友链同样收录了几个满满干货的dalao，强推（竟然失效了，遗憾…）。</p>
+<p><del><a class="link"   href="https://www.bilibili.com/read/cv4474525" >西方“鼠王”的恐怖传说，几十只老鼠尾巴交缠成的痛苦之轮 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></del><br>一直以为所谓鼠王就是指老鼠里的老大（大概就像以为小熊猫是熊猫吧），没想到现实中鼠王是这么猎奇的一个存在。</p>
+]]></content>
+      <tags>
+        <tag>“网文”收录</tag>
       </tags>
   </entry>
   <entry>
